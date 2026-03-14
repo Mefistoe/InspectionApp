@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AURA Field">
+<meta name="theme-color" content="#0c0f0d">
+<title>AURA Field</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0c0f0d;
+  --surface:      #161a17;
+  --surface2:     #1f2520;
+  --surface3:     #272d28;
+  --border:       #2a3129;
+  --border2:      #343d33;
+  --amber:        #f0a020;
+  --amber-dim:    #b87a18;
+  --amber-glow:   rgba(240,160,32,0.12);
+  --text:         #dde8df;
+  --text-dim:     #68806e;
+  --text-mid:     #9db39f;
+  --red:          #d95050;
+  --red-bg:       rgba(217,80,80,0.10);
+  --red-border:   rgba(217,80,80,0.35);
+  --green:        #4aac78;
+  --mono:         ui-monospace,'SF Mono',Menlo,'Cascadia Code',monospace;
+  --sans:         -apple-system,'SF Pro Text',system-ui,sans-serif;
+  --safe-top:     env(safe-area-inset-top, 0px);
+  --safe-bottom:  env(safe-area-inset-bottom, 0px);
+  --safe-left:    env(safe-area-inset-left, 0px);
+  --safe-right:   env(safe-area-inset-right, 0px);
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+/* ═══════════════ SCREENS ═══════════════ */
+
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+.screen.hidden { display: none !important; }
+
+/* ═══════════════ JOB LIST ═══════════════ */
+
+#screen-jobs {
+  padding: calc(var(--safe-top) + 20px) 20px 0;
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  margin-bottom: 2px;
+}
+
+.screen-subtitle {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.job-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0 -20px;
+  padding: 0 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.job-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.12s;
+  -webkit-user-select: none;
+}
+.job-card:active { border-color: var(--amber); background: var(--surface2); }
+
+.job-card-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.job-card-client {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.job-card-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.empty-state .e-icon { font-size: 28px; margin-bottom: 12px; opacity: 0.3; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 58px;
+  background: var(--amber);
+  color: #0c0f0d;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 16px 0 calc(var(--safe-bottom) + 16px);
+  transition: opacity 0.1s;
+}
+.btn-primary:active { opacity: 0.8; }
+
+/* ═══════════════ NEW JOB ═══════════════ */
+
+#screen-new-job {
+  padding: calc(var(--safe-top) + 0px) 0 0;
+  overflow-y: auto;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--safe-top) + 12px) 16px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.screen-header-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.back-btn {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none;
+  color: var(--amber); font-size: 20px;
+  cursor: pointer; border-radius: 8px;
+  flex-shrink: 0;
+}
+.back-btn:active { background: var(--surface2); }
+
+.form-body {
+  padding: 20px 16px;
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.form-input {
+  width: 100%;
+  height: 50px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  padding: 0 14px;
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-appearance: none;
+}
+.form-input:focus { border-color: var(--amber); }
+.form-input::placeholder { color: var(--text-dim); }
+
+.form-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 5px;
+}
+
+/* ═══════════════ MAIN CAPTURE ═══════════════ */
+
+#screen-main {
+  display: none;
+}
+#screen-main.active { display: flex; }
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--safe-top) + 10px) 16px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.topbar-job {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--amber);
+}
+
+.topbar-client {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-right {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none;
+  color: var(--text-dim);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 17px;
+  transition: color 0.12s, background 0.12s;
+}
+.icon-btn:active { background: var(--surface2); color: var(--text); }
+
+/* Location bar */
+.location-bar {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.location-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  -webkit-user-select: none;
+}
+.location-btn:active { background: var(--surface3); }
+
+.loc-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--amber-glow);
+  animation: dot-breathe 2.4s ease infinite;
+}
+@keyframes dot-breathe {
+  0%,100% { box-shadow: 0 0 0 3px var(--amber-glow); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+
+.loc-label-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.loc-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.loc-name.unset {
+  color: var(--amber);
+  font-size: 13px;
+  animation: loc-blink 2s ease infinite;
+}
+@keyframes loc-blink {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.45; }
+}
+
+.loc-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.loc-chevron {
+  color: var(--text-dim);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* Timeline */
+#timeline {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.tl-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  gap: 10px;
+  text-align: center;
+  pointer-events: none;
+}
+.tl-empty-icon { font-size: 30px; opacity: 0.2; }
+
+/* Photo entry */
+.entry-photo {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.photo-thumb {
+  width: 76px;
+  height: 76px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: opacity 0.1s;
+  background: var(--surface2);
+}
+.photo-thumb:active { opacity: 0.75; }
+
+.entry-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.entry-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.entry-loc-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+}
+
+/* Note entry */
+.entry-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.entry-note:active { border-color: var(--amber); background: var(--surface2); }
+.entry-note.flagged { border-color: var(--red-border); background: var(--red-bg); }
+
+.note-text {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 7px;
+  word-break: break-word;
+}
+
+.note-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.badge-s520 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--red-bg);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  padding: 2px 7px;
+  flex-shrink: 0;
+}
+
+/* Action bar */
+.action-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 14px calc(var(--safe-bottom) + 12px);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.action-btn {
+  height: 66px;
+  border: none;
+  border-radius: 11px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: transform 0.1s, opacity 0.1s;
+  -webkit-user-select: none;
+}
+.action-btn:active { transform: scale(0.96); opacity: 0.82; }
+
+.btn-photo {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border2);
+}
+.btn-note {
+  background: var(--amber);
+  color: #0c0f0d;
+}
+
+.btn-icon { font-size: 19px; }
+
+/* ═══════════════ CAMERA ═══════════════ */
+
+#overlay-camera {
+  position: fixed; inset: 0;
+  z-index: 100;
+  background: #000;
+  display: none;
+  flex-direction: column;
+}
+#overlay-camera.active { display: flex; }
+
+#viewfinder {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.cam-overlay {
+  position: absolute; inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cam-top {
+  padding: calc(var(--safe-top) + 14px) 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
+}
+
+.cam-loc {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.cam-close {
+  width: 40px; height: 40px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.cam-close:active { background: rgba(0,0,0,0.65); }
+
+.cam-spacer { flex: 1; }
+
+.cam-bottom {
+  padding: 20px 0 calc(var(--safe-bottom) + 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+  gap: 40px;
+}
+
+.capture-ring {
+  width: 74px; height: 74px;
+  border: 3px solid rgba(255,255,255,0.85);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.1s;
+}
+.capture-ring:active { transform: scale(0.93); }
+
+.capture-inner {
+  width: 58px; height: 58px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  transition: transform 0.1s;
+}
+.capture-ring:active .capture-inner { transform: scale(0.88); }
+
+.cam-flash {
+  position: absolute; inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.05s;
+}
+.cam-flash.flash { opacity: 0.7; }
+
+/* ═══════════════ NOTE MODAL ═══════════════ */
+
+#overlay-note {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+}
+#overlay-note.active { display: flex; }
+
+.note-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.note-sheet {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: var(--surface);
+  border-top: 1px solid var(--border2);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  padding: 16px 16px calc(var(--safe-bottom) + 16px);
+}
+
+.note-handle {
+  width: 36px; height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  margin: 0 auto 14px;
+}
+
+.note-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.note-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.note-loc-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--amber);
+  text-transform: uppercase;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.textarea-wrap {
+  position: relative;
+  margin-bottom: 11px;
+}
+
+#note-textarea {
+  width: 100%;
+  min-height: 110px;
+  max-height: 220px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  padding: 12px 48px 12px 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#note-textarea:focus { border-color: var(--amber); }
+#note-textarea::placeholder { color: var(--text-dim); }
+
+.mic-btn {
+  position: absolute;
+  right: 8px; bottom: 8px;
+  width: 36px; height: 36px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text-dim);
+  font-size: 17px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.mic-btn.listening {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-bg);
+  animation: mic-ring 0.75s ease infinite;
+}
+@keyframes mic-ring {
+  0%,100% { box-shadow: 0 0 0 0 rgba(217,80,80,0.3); }
+  50%     { box-shadow: 0 0 0 5px rgba(217,80,80,0); }
+}
+
+.note-actions {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.s520-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 44px;
+  padding: 0 13px;
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.12s;
+}
+.s520-toggle.on {
+  background: var(--red-bg);
+  border-color: var(--red-border);
+  color: var(--red);
+}
+
+.btn-cancel {
+  width: 44px; height: 44px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.btn-cancel:active { background: var(--surface3); }
+
+.btn-save {
+  flex: 1;
+  height: 44px;
+  background: var(--amber);
+  color: #0c0f0d;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.1s;
+}
+.btn-save:active { opacity: 0.8; }
+
+/* ═══════════════ LOCATION PICKER ═══════════════ */
+
+#overlay-location {
+  position: fixed; inset: 0;
+  z-index: 300;
+  background: var(--bg);
+  display: none;
+  flex-direction: column;
+}
+#overlay-location.active { display: flex; }
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(var(--safe-top) + 10px) 16px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.picker-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  flex: 1;
+  text-transform: uppercase;
+}
+
+.search-wrap {
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+
+.loc-search {
+  width: 100%;
+  height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  color: var(--text);
+  font-size: 16px;
+  padding: 0 14px;
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-appearance: none;
+}
+.loc-search:focus { border-color: var(--amber); }
+.loc-search::placeholder { color: var(--text-dim); }
+
+#location-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 14px 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.loc-group-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+  padding: 14px 2px 7px;
+}
+
+.loc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: border-color 0.1s;
+  -webkit-user-select: none;
+}
+.loc-item:active { border-color: var(--amber); background: var(--surface2); }
+.loc-item.current { border-color: var(--amber); background: var(--amber-glow); }
+
+.loc-item-name {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.loc-item-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.btn-add-custom {
+  margin: 6px 14px calc(var(--safe-bottom) + 14px);
+  height: 50px;
+  background: none;
+  border: 1px dashed var(--border2);
+  border-radius: 8px;
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  transition: border-color 0.12s;
+}
+.btn-add-custom:active { border-color: var(--amber); }
+
+/* ═══════════════ SETTINGS ═══════════════ */
+
+#overlay-settings {
+  position: fixed; inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  display: none;
+  flex-direction: column;
+}
+#overlay-settings.active { display: flex; }
+
+.settings-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.settings-section { margin-bottom: 28px; }
+
+.settings-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.settings-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 15px;
+  margin-bottom: 8px;
+}
+
+.settings-row-title {
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.settings-row-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.settings-input {
+  width: 100%;
+  height: 42px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 16px;
+  padding: 0 12px;
+  margin-top: 9px;
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-appearance: none;
+}
+.settings-input:focus { border-color: var(--amber); }
+.settings-input::placeholder { color: var(--text-dim); }
+
+.btn-learn {
+  margin-top: 9px;
+  height: 40px;
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.btn-learn:active { background: var(--surface3); }
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 50px;
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  color: var(--text-mid);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: border-color 0.12s, color 0.12s;
+}
+.btn-ghost:active { border-color: var(--amber); color: var(--amber); }
+
+.btn-ghost.danger { color: var(--red); border-color: var(--red-border); }
+.btn-ghost.danger:active { background: var(--red-bg); }
+
+/* ═══════════════ LIGHTBOX ═══════════════ */
+
+#overlay-lightbox {
+  position: fixed; inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.96);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#overlay-lightbox.active { display: flex; }
+
+#lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.lb-close {
+  position: absolute;
+  top: calc(var(--safe-top) + 14px);
+  right: 16px;
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════ TOAST ═══════════════ */
+
+#toast {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + 90px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ═══════════════ SCROLLBAR HIDING ═══════════════ */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SCREEN: JOB LIST ══════════════ -->
+<div id="screen-jobs" class="screen">
+  <div class="wordmark">AURA FIELD</div>
+  <div class="screen-subtitle">IEQ Inspection Capture</div>
+  <div class="job-list" id="job-list">
+    <div class="empty-state">
+      <div class="e-icon">◎</div>
+      <div>No inspections yet</div>
+    </div>
+  </div>
+  <button class="btn-primary" onclick="showNewJob()">+ New Inspection</button>
+</div>
+
+<!-- ══════════════ SCREEN: NEW JOB ══════════════ -->
+<div id="screen-new-job" class="screen hidden">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('screen-jobs')">←</button>
+    <div class="screen-header-title">New Inspection</div>
+  </div>
+  <div class="form-body">
+    <div class="form-group">
+      <label class="form-label" for="f-job-id">Job ID</label>
+      <input class="form-input" id="f-job-id" type="text" autocapitalize="characters" spellcheck="false" placeholder="R031326A">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="f-client">Client Name</label>
+      <input class="form-input" id="f-client" type="text" autocapitalize="words" placeholder="Smith">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="f-address">Address</label>
+      <input class="form-input" id="f-address" type="text" autocapitalize="words" placeholder="123 Main St, City, VA">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="f-inspector">Inspector</label>
+      <input class="form-input" id="f-inspector" type="text" autocapitalize="words" placeholder="Eva M King">
+      <div class="form-hint">Saved for future inspections</div>
+    </div>
+    <button class="btn-primary" onclick="createJob()" style="margin-top: 8px">Start Inspection →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: MAIN CAPTURE ══════════════ -->
+<div id="screen-main" class="screen">
+  <div class="topbar">
+    <div class="topbar-job">
+      <div class="topbar-id" id="topbar-id">R031326A</div>
+      <div class="topbar-client" id="topbar-client">—</div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="exportJSON()" title="Export">⇧</button>
+      <button class="icon-btn" onclick="showSettings()" title="Settings">⚙</button>
+    </div>
+  </div>
+
+  <div class="location-bar">
+    <button class="location-btn" onclick="showLocationPicker()">
+      <div class="loc-dot"></div>
+      <div class="loc-label-wrap">
+        <div class="loc-name unset" id="loc-name">TAP TO SELECT LOCATION</div>
+        <div class="loc-count" id="loc-count"></div>
+      </div>
+      <div class="loc-chevron">▼</div>
+    </button>
+  </div>
+
+  <div id="timeline">
+    <div class="tl-empty" id="tl-empty">
+      <div class="tl-empty-icon">◎</div>
+      <div>Select a location to begin</div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="action-btn btn-photo" onclick="openCamera()">
+      <span class="btn-icon">◉</span>PHOTO
+    </button>
+    <button class="action-btn btn-note" onclick="openNote()">
+      <span class="btn-icon">✎</span>NOTE
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ OVERLAY: CAMERA ══════════════ -->
+<div id="overlay-camera">
+  <video id="viewfinder" autoplay playsinline muted></video>
+  <div class="cam-flash" id="cam-flash"></div>
+  <div class="cam-overlay">
+    <div class="cam-top">
+      <div class="cam-loc" id="cam-loc-label">—</div>
+      <button class="cam-close" onclick="closeCamera()">✕</button>
+    </div>
+    <div class="cam-spacer"></div>
+    <div class="cam-bottom">
+      <button class="capture-ring" id="btn-capture" onclick="capturePhoto()">
+        <div class="capture-inner"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ OVERLAY: NOTE ══════════════ -->
+<div id="overlay-note">
+  <div class="note-backdrop" onclick="cancelNote()"></div>
+  <div class="note-sheet">
+    <div class="note-handle"></div>
+    <div class="note-hdr">
+      <span class="note-title" id="note-title">ADD NOTE</span>
+      <span class="note-loc-label" id="note-loc-label"></span>
+    </div>
+    <div class="textarea-wrap">
+      <textarea id="note-textarea" placeholder="Describe the finding…" rows="4"></textarea>
+      <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">🎤</button>
+    </div>
+    <div class="note-actions">
+      <button class="btn-cancel" onclick="cancelNote()">✕</button>
+      <button class="s520-toggle" id="s520-toggle" onclick="toggleS520()">⬤ S520</button>
+      <button class="btn-save" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ OVERLAY: LOCATION PICKER ══════════════ -->
+<div id="overlay-location">
+  <div class="picker-header">
+    <button class="icon-btn" onclick="closeLocationPicker()">✕</button>
+    <div class="picker-title">Select Location</div>
+  </div>
+  <div class="search-wrap">
+    <input type="text" class="loc-search" id="loc-search" placeholder="Search locations…" oninput="filterLocations(this.value)" autocapitalize="off" spellcheck="false">
+  </div>
+  <div id="location-list"></div>
+  <button class="btn-add-custom" onclick="addCustomLocation()">+ Add Custom Location</button>
+</div>
+
+<!-- ══════════════ OVERLAY: SETTINGS ══════════════ -->
+<div id="overlay-settings">
+  <div class="screen-header">
+    <button class="back-btn" onclick="closeSettings()">←</button>
+    <div class="screen-header-title">Settings</div>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-label">Default Inspector</div>
+      <div class="settings-row">
+        <div class="settings-row-title">Inspector Name</div>
+        <input class="settings-input" id="s-inspector" type="text" autocapitalize="words" placeholder="Eva M King" onchange="localStorage.setItem('inspector', this.value)">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-label">Bluetooth Shutter</div>
+      <div class="settings-row">
+        <div class="settings-row-title">Shutter Key Binding</div>
+        <div class="settings-row-sub" id="s-key-display">Current key: Space</div>
+        <button class="btn-learn" id="btn-learn" onclick="learnKey()">Press to learn key from shutter remote</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-label">This Inspection</div>
+      <button class="btn-ghost" onclick="exportJSON(); closeSettings()">⇧ Export JSON</button>
+      <button class="btn-ghost danger" onclick="confirmCloseJob()">← Close Inspection</button>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-label">Add to Home Screen (iOS)</div>
+      <div class="settings-row">
+        <div class="settings-row-title">Offline Setup</div>
+        <div class="settings-row-sub">Open in Safari → tap the Share button (□↑) → tap "Add to Home Screen" → tap Add. The app will work offline after the first load.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ OVERLAY: LIGHTBOX ══════════════ -->
+<div id="overlay-lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+  <button class="lb-close">✕</button>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// LOCATION DATA
+// ════════════════════════════════════════════════════════
+
+const LOCATION_GROUPS = [
+  { g: 'EXTERIOR', locs: ['Front Exterior','Rear Exterior','Left Side Exterior','Right Side Exterior','Roof','Deck / Patio','Driveway / Hardscape','Foundation Exterior','Garage Exterior'] },
+  { g: 'GARAGE', locs: ['Garage Interior','Garage Ceiling','Garage Attic Space'] },
+  { g: 'CRAWLSPACE', locs: ['Crawlspace — Entry','Crawlspace — General','Crawlspace — Far End','Crawlspace — Perimeter','Crawlspace — Under Addition'] },
+  { g: 'BASEMENT', locs: ['Basement — Utility / Mechanical Room','Basement — Laundry','Basement — Bathroom','Basement — Bedroom','Basement — Finished Living Area','Basement — Storage Area','Basement — Stairwell','Basement — Sump Area','Basement — Bar / Kitchenette'] },
+  { g: 'GROUND FLOOR', locs: ['Entry / Foyer','Living Room','Family Room','Dining Room','Kitchen','Powder Room','Laundry Room','Office / Study','Hallway','Mudroom','Pantry','Sunroom','Under Stairs'] },
+  { g: 'SECOND FLOOR', locs: ['Master Bedroom','Master Bathroom','Bedroom 2','Bedroom 3','Bedroom 4','Bathroom (2nd Floor)','Hallway (2nd Floor)','Laundry Room (2nd Floor)','Walk-in Closet','Linen Closet'] },
+  { g: 'THIRD FLOOR', locs: ['Bedroom (3rd Floor)','Bathroom (3rd Floor)','Bonus Room','Hallway (3rd Floor)'] },
+  { g: 'ATTIC', locs: ['Attic — Main Access','Attic — General','Attic — Knee Wall','Attic — Over Garage','Attic — Low-Slope Section'] },
+  { g: 'HVAC / MECHANICAL', locs: ['Air Handling Unit','Furnace / Boiler','Ductwork — Supply','Ductwork — Return','ERV / HRV Unit','Water Heater','Radon Mitigation System','Whole-House Dehumidifier'] },
+  { g: 'EXTENDED', locs: ['Library','Home Theater','Wine Cellar','Guest Suite','Guest Bathroom','In-Law Suite','Exercise Room','Game Room','Pool Equipment Room','Workshop','Sauna / Steam Room','Safe Room'] }
+];
+
+const S520_WORDS = ['mold','fungal','fungus','mould','moldy','mouldy','growth','chaetomium','aspergillus','penicillium','stachybotrys','rot','rotted','rotten','remediat','condition 3','cat 3','category 3','iicrc','contamina','cladosporium'];
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+
+let db = null;
+let job = null;           // current job object
+let locName = null;       // current location name string
+let locCounts = {};       // locationName → entry count
+let editId = null;        // entry id being edited
+let s520On = false;
+let cameraStream = null;
+let recognizer = null;
+let micActive = false;
+let btKey = ' ';
+let learningKey = false;
+
+// ════════════════════════════════════════════════════════
+// INDEXEDDB
+// ════════════════════════════════════════════════════════
+
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('aura_field', 2);
+    r.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('jobs'))
+        d.createObjectStore('jobs', { keyPath: 'id' });
+      if (!d.objectStoreNames.contains('entries')) {
+        const es = d.createObjectStore('entries', { keyPath: 'id' });
+        es.createIndex('jobId', 'jobId');
+      }
+    };
+    r.onsuccess = e => res(e.target.result);
+    r.onerror = e => rej(e.target.error);
+  });
+}
+
+function tx(store, mode, fn) {
+  return new Promise((res, rej) => {
+    const t = db.transaction(store, mode);
+    const s = t.objectStore(store);
+    const r = fn(s);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+
+const put  = (store, obj) => tx(store, 'readwrite', s => s.put(obj));
+const get  = (store, key) => tx(store, 'readonly',  s => s.get(key));
+const del  = (store, key) => tx(store, 'readwrite', s => s.delete(key));
+const all  = (store)      => tx(store, 'readonly',  s => s.getAll());
+
+function jobEntries(jobId) {
+  return new Promise((res, rej) => {
+    const t = db.transaction('entries', 'readonly');
+    const idx = t.objectStore('entries').index('jobId');
+    const r = idx.getAll(jobId);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+function fmtTime(ts) {
+  return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function autoJobId() {
+  const n = new Date();
+  const mm = String(n.getMonth()+1).padStart(2,'0');
+  const dd = String(n.getDate()).padStart(2,'0');
+  const yy = String(n.getFullYear()).slice(2);
+  return `R${mm}${dd}${yy}A`;
+}
+
+function s520check(text) {
+  const low = text.toLowerCase();
+  return S520_WORDS.some(w => low.includes(w));
+}
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>');
+}
+
+let toastTimer;
+function toast(msg, ms = 2000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+// ════════════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ════════════════════════════════════════════════════════
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.add('hidden');
+    s.classList.remove('active');
+  });
+  const el = document.getElementById(id);
+  el.classList.remove('hidden');
+  if (id === 'screen-main') el.classList.add('active');
+}
+
+function showOverlay(id) { document.getElementById(id).classList.add('active'); }
+function hideOverlay(id) { document.getElementById(id).classList.remove('active'); }
+
+// ════════════════════════════════════════════════════════
+// JOB LIST
+// ════════════════════════════════════════════════════════
+
+async function loadJobs() {
+  showScreen('screen-jobs');
+  const jobs = await all('jobs');
+  const el = document.getElementById('job-list');
+
+  if (!jobs.length) {
+    el.innerHTML = '<div class="empty-state"><div class="e-icon">◎</div><div>No inspections yet</div></div>';
+    return;
+  }
+
+  jobs.sort((a,b) => b.createdAt - a.createdAt);
+  el.innerHTML = jobs.map(j => `
+    <div class="job-card" onclick="resumeJob('${j.id}')">
+      <div class="job-card-id">${j.id}</div>
+      <div class="job-card-client">${j.client || '—'}</div>
+      <div class="job-card-meta">${[j.address, new Date(j.createdAt).toLocaleDateString()].filter(Boolean).join(' · ')}</div>
+    </div>
+  `).join('');
+}
+
+function showNewJob() {
+  showScreen('screen-new-job');
+  document.getElementById('f-job-id').value = autoJobId();
+  document.getElementById('f-inspector').value = localStorage.getItem('inspector') || '';
+  document.getElementById('f-client').value = '';
+  document.getElementById('f-address').value = '';
+}
+
+async function createJob() {
+  const id = document.getElementById('f-job-id').value.trim();
+  const client = document.getElementById('f-client').value.trim();
+  const address = document.getElementById('f-address').value.trim();
+  const inspector = document.getElementById('f-inspector').value.trim();
+
+  if (!id) { toast('Job ID is required'); return; }
+  if (inspector) localStorage.setItem('inspector', inspector);
+
+  const j = { id, client, address, inspector, createdAt: Date.now() };
+  await put('jobs', j);
+  await startJob(j);
+}
+
+async function resumeJob(id) {
+  const j = await get('jobs', id);
+  if (j) await startJob(j);
+}
+
+async function startJob(j) {
+  job = j;
+  locName = null;
+  document.getElementById('topbar-id').textContent = j.id;
+  document.getElementById('topbar-client').textContent = j.client || j.id;
+  await refreshCounts();
+  showScreen('screen-main');
+  updateLocBar();
+  renderTimeline();
+}
+
+// ════════════════════════════════════════════════════════
+// LOCATION BAR
+// ════════════════════════════════════════════════════════
+
+async function refreshCounts() {
+  if (!job) return;
+  const entries = await jobEntries(job.id);
+  locCounts = {};
+  entries.forEach(e => { locCounts[e.locName] = (locCounts[e.locName] || 0) + 1; });
+}
+
+function updateLocBar() {
+  const nameEl = document.getElementById('loc-name');
+  const cntEl  = document.getElementById('loc-count');
+  const camEl  = document.getElementById('cam-loc-label');
+
+  if (!locName) {
+    nameEl.textContent = 'TAP TO SELECT LOCATION';
+    nameEl.classList.add('unset');
+    cntEl.textContent = '';
+    camEl.textContent = '—';
+  } else {
+    nameEl.textContent = locName;
+    nameEl.classList.remove('unset');
+    const n = locCounts[locName] || 0;
+    cntEl.textContent = n ? `${n} capture${n > 1 ? 's' : ''}` : '';
+    camEl.textContent = locName;
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// TIMELINE
+// ════════════════════════════════════════════════════════
+
+async function renderTimeline() {
+  const container = document.getElementById('timeline');
+  const emptyEl   = document.getElementById('tl-empty');
+
+  if (!locName) {
+    container.innerHTML = '';
+    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>Select a location to begin</div>';
+    container.appendChild(emptyEl);
+    return;
+  }
+
+  const all_entries = await jobEntries(job.id);
+  const entries = all_entries
+    .filter(e => e.locName === locName)
+    .sort((a,b) => b.ts - a.ts); // newest first
+
+  if (!entries.length) {
+    container.innerHTML = '';
+    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>No captures yet</div><div style="font-size:10px;margin-top:6px">Use PHOTO or NOTE below</div>';
+    container.appendChild(emptyEl);
+    return;
+  }
+
+  container.innerHTML = '';
+
+  entries.forEach(entry => {
+    const el = document.createElement('div');
+
+    if (entry.type === 'photo') {
+      el.className = 'entry-photo';
+      el.innerHTML = `
+        <img class="photo-thumb" src="${entry.thumb}" alt="" loading="lazy" onclick="openLightbox('${entry.id}')">
+        <div class="entry-meta">
+          <div class="entry-time">${fmtTime(entry.ts)}</div>
+          <div class="entry-loc-tag">${esc(entry.locName)}</div>
+        </div>`;
+    } else {
+      const s520Badge = entry.s520 ? '<span class="badge-s520">⬤ S520</span>' : '';
+      el.className = 'entry-note' + (entry.s520 ? ' flagged' : '');
+      el.innerHTML = `
+        <div class="note-text">${esc(entry.text)}</div>
+        <div class="note-footer">
+          <div class="entry-time">${fmtTime(entry.ts)}</div>
+          ${s520Badge}
+        </div>`;
+      el.onclick = () => openEditNote(entry.id);
+    }
+
+    container.appendChild(el);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// CAMERA
+// ════════════════════════════════════════════════════════
+
+async function openCamera() {
+  if (!locName) { showLocationPicker(); return; }
+
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+      audio: false
+    });
+    document.getElementById('viewfinder').srcObject = cameraStream;
+    showOverlay('overlay-camera');
+  } catch(err) {
+    toast('Camera: ' + (err.message || err.name));
+  }
+}
+
+function closeCamera() {
+  if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+  document.getElementById('viewfinder').srcObject = null;
+  hideOverlay('overlay-camera');
+}
+
+async function capturePhoto() {
+  const vid = document.getElementById('viewfinder');
+  if (!vid.videoWidth) return;
+
+  // Flash
+  const flash = document.getElementById('cam-flash');
+  flash.classList.add('flash');
+  setTimeout(() => flash.classList.remove('flash'), 100);
+
+  // Full-res canvas
+  const c = document.createElement('canvas');
+  c.width = vid.videoWidth; c.height = vid.videoHeight;
+  c.getContext('2d').drawImage(vid, 0, 0);
+  const img = c.toDataURL('image/jpeg', 0.85);
+
+  // Thumbnail
+  const t = document.createElement('canvas');
+  const ratio = vid.videoHeight / vid.videoWidth;
+  t.width = 240; t.height = Math.round(240 * ratio);
+  t.getContext('2d').drawImage(vid, 0, 0, t.width, t.height);
+  const thumb = t.toDataURL('image/jpeg', 0.7);
+
+  const entry = { id: uid(), jobId: job.id, locName, type: 'photo', ts: Date.now(), img, thumb };
+  await put('entries', entry);
+  await refreshCounts();
+  await renderTimeline();
+  updateLocBar();
+  toast('📷 Saved');
+}
+
+// ════════════════════════════════════════════════════════
+// NOTE
+// ════════════════════════════════════════════════════════
+
+function openNote() {
+  if (!locName) { showLocationPicker(); return; }
+  editId = null;
+  s520On = false;
+  document.getElementById('note-textarea').value = '';
+  document.getElementById('s520-toggle').classList.remove('on');
+  document.getElementById('note-title').textContent = 'ADD NOTE';
+  document.getElementById('note-loc-label').textContent = locName;
+  showOverlay('overlay-note');
+  setTimeout(() => document.getElementById('note-textarea').focus(), 150);
+}
+
+async function openEditNote(id) {
+  const entry = await get('entries', id);
+  if (!entry) return;
+  editId = id;
+  s520On = entry.s520 || false;
+  document.getElementById('note-textarea').value = entry.text;
+  document.getElementById('s520-toggle').classList.toggle('on', s520On);
+  document.getElementById('note-title').textContent = 'EDIT NOTE';
+  document.getElementById('note-loc-label').textContent = entry.locName;
+  showOverlay('overlay-note');
+  setTimeout(() => document.getElementById('note-textarea').focus(), 150);
+}
+
+function cancelNote() {
+  if (micActive) stopMic();
+  hideOverlay('overlay-note');
+  editId = null;
+}
+
+async function saveNote() {
+  const text = document.getElementById('note-textarea').value.trim();
+  if (!text) { toast('Note is empty'); return; }
+  if (micActive) stopMic();
+
+  const autoFlag = s520check(text);
+  const s520 = s520On || autoFlag;
+
+  if (editId) {
+    const entry = await get('entries', editId);
+    if (entry) { entry.text = text; entry.s520 = s520; entry.edited = Date.now(); await put('entries', entry); }
+  } else {
+    await put('entries', { id: uid(), jobId: job.id, locName, type: 'note', ts: Date.now(), text, s520 });
+  }
+
+  hideOverlay('overlay-note');
+  document.getElementById('note-textarea').value = '';
+  editId = null;
+
+  await refreshCounts();
+  await renderTimeline();
+  updateLocBar();
+
+  if (s520 && !s520On && autoFlag) toast('✎ Saved — S520 auto-flagged');
+  else toast('✎ Note saved');
+}
+
+function toggleS520() {
+  s520On = !s520On;
+  document.getElementById('s520-toggle').classList.toggle('on', s520On);
+}
+
+// ════════════════════════════════════════════════════════
+// VOICE INPUT
+// ════════════════════════════════════════════════════════
+
+function toggleMic() {
+  micActive ? stopMic() : startMic();
+}
+
+function startMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Speech recognition unavailable'); return; }
+
+  recognizer = new SR();
+  recognizer.continuous = false;
+  recognizer.interimResults = false;
+  recognizer.lang = 'en-US';
+
+  const ta = document.getElementById('note-textarea');
+  const base = ta.value;
+
+  recognizer.onresult = e => {
+    const t = e.results[0][0].transcript;
+    ta.value = base + (base && !base.endsWith(' ') ? ' ' : '') + t;
+  };
+
+  recognizer.onend = () => { micActive = false; document.getElementById('mic-btn').classList.remove('listening'); };
+  recognizer.onerror = e => { micActive = false; document.getElementById('mic-btn').classList.remove('listening'); if (e.error !== 'no-speech') toast('Mic: ' + e.error); };
+
+  recognizer.start();
+  micActive = true;
+  document.getElementById('mic-btn').classList.add('listening');
+}
+
+function stopMic() {
+  if (recognizer) recognizer.stop();
+  micActive = false;
+  document.getElementById('mic-btn').classList.remove('listening');
+}
+
+// ════════════════════════════════════════════════════════
+// LOCATION PICKER
+// ════════════════════════════════════════════════════════
+
+function showLocationPicker() {
+  document.getElementById('loc-search').value = '';
+  renderLocList('');
+  showOverlay('overlay-location');
+  setTimeout(() => document.getElementById('loc-search').focus(), 200);
+}
+
+function closeLocationPicker() { hideOverlay('overlay-location'); }
+
+function renderLocList(filter) {
+  const f = filter.toLowerCase().trim();
+  const custom = JSON.parse(localStorage.getItem('customLocs') || '[]');
+  const groups = custom.length
+    ? [...LOCATION_GROUPS, { g: 'CUSTOM', locs: custom }]
+    : LOCATION_GROUPS;
+
+  let html = '';
+  for (const { g, locs } of groups) {
+    const filtered = f ? locs.filter(l => l.toLowerCase().includes(f)) : locs;
+    if (!filtered.length) continue;
+    html += `<div class="loc-group-label">${g}</div>`;
+    filtered.forEach(loc => {
+      const cnt  = locCounts[loc] || 0;
+      const cur  = loc === locName ? ' current' : '';
+      const safe = loc.replace(/'/g,"\\'");
+      html += `
+        <div class="loc-item${cur}" onclick="pickLocation('${safe}')">
+          <div class="loc-item-name">${loc}</div>
+          <div class="loc-item-count">${cnt || ''}</div>
+        </div>`;
+    });
+  }
+
+  document.getElementById('location-list').innerHTML =
+    html || '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:24px;font-family:var(--mono)">No matches</div>';
+}
+
+function filterLocations(v) { renderLocList(v); }
+
+function pickLocation(name) {
+  locName = name;
+  closeLocationPicker();
+  updateLocBar();
+  renderTimeline();
+}
+
+function addCustomLocation() {
+  const name = prompt('Location name:');
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  const stored = JSON.parse(localStorage.getItem('customLocs') || '[]');
+  if (!stored.includes(trimmed)) { stored.push(trimmed); localStorage.setItem('customLocs', JSON.stringify(stored)); }
+  pickLocation(trimmed);
+}
+
+// ════════════════════════════════════════════════════════
+// LIGHTBOX
+// ════════════════════════════════════════════════════════
+
+async function openLightbox(id) {
+  const entry = await get('entries', id);
+  if (!entry) return;
+  document.getElementById('lightbox-img').src = entry.img;
+  showOverlay('overlay-lightbox');
+}
+
+function closeLightbox() {
+  hideOverlay('overlay-lightbox');
+  setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
+}
+
+// ════════════════════════════════════════════════════════
+// EXPORT
+// ════════════════════════════════════════════════════════
+
+async function exportJSON() {
+  if (!job) { toast('No active inspection'); return; }
+
+  const entries = await jobEntries(job.id);
+
+  // Build location order from first-appearance
+  const seen = [];
+  entries.sort((a,b) => a.ts - b.ts).forEach(e => { if (!seen.includes(e.locName)) seen.push(e.locName); });
+
+  const locMap = {};
+  entries.forEach(e => { (locMap[e.locName] = locMap[e.locName] || []).push(e); });
+
+  const out = {
+    schema_version: '1.0',
+    job: {
+      id: job.id,
+      client: job.client || '',
+      address: job.address || '',
+      inspector: job.inspector || '',
+      inspection_date: new Date().toISOString().split('T')[0],
+      exported_at: new Date().toISOString()
+    },
+    locations: seen.map((loc, i) => ({
+      sequence: i + 1,
+      name: loc,
+      entries: (locMap[loc] || []).map(e => {
+        const base = { id: e.id, type: e.type, timestamp: new Date(e.ts).toISOString() };
+        if (e.type === 'note')  { base.text = e.text; base.s520_flag = e.s520 || false; }
+        if (e.type === 'photo') { base.image_data = e.img; base.thumbnail = e.thumb; }
+        return base;
+      })
+    }))
+  };
+
+  const json = JSON.stringify(out, null, 2);
+  const filename = `${job.id}_${job.client || 'inspection'}.json`;
+
+  // iOS-safe download
+  try {
+    const blob = new Blob([json], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch(e) {
+    // Fallback: data URI
+    const uri = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+    const a = document.createElement('a');
+    a.href = uri; a.download = filename; a.click();
+  }
+
+  toast('Exported ' + filename);
+}
+
+// ════════════════════════════════════════════════════════
+// SETTINGS
+// ════════════════════════════════════════════════════════
+
+function showSettings() {
+  document.getElementById('s-inspector').value = localStorage.getItem('inspector') || '';
+  const k = localStorage.getItem('btKey') || ' ';
+  btKey = k;
+  document.getElementById('s-key-display').textContent = 'Current key: ' + (k === ' ' ? 'Space' : k);
+  showOverlay('overlay-settings');
+}
+
+function closeSettings() { hideOverlay('overlay-settings'); }
+
+function learnKey() {
+  const btn = document.getElementById('btn-learn');
+  btn.textContent = 'Waiting — press shutter now…';
+  learningKey = true;
+
+  const handler = e => {
+    e.preventDefault();
+    btKey = e.key;
+    localStorage.setItem('btKey', btKey);
+    const label = btKey === ' ' ? 'Space' : btKey;
+    document.getElementById('s-key-display').textContent = 'Current key: ' + label;
+    btn.textContent = '✓ Learned: ' + label;
+    learningKey = false;
+    document.removeEventListener('keydown', handler);
+    setTimeout(() => { btn.textContent = 'Press to learn key from shutter remote'; }, 2500);
+  };
+
+  document.addEventListener('keydown', handler, { once: true });
+}
+
+function confirmCloseJob() {
+  if (confirm('Close this inspection and return to job list?')) {
+    closeSettings();
+    job = null; locName = null;
+    loadJobs();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// BLUETOOTH SHUTTER
+// ════════════════════════════════════════════════════════
+
+document.addEventListener('keydown', e => {
+  if (learningKey) return;
+
+  const key = localStorage.getItem('btKey') || ' ';
+  if (e.key !== key) return;
+
+  const active = document.activeElement;
+  if (active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT')) return;
+
+  e.preventDefault();
+
+  const camOpen  = document.getElementById('overlay-camera').classList.contains('active');
+  const noteOpen = document.getElementById('overlay-note').classList.contains('active');
+  const mainVis  = document.getElementById('screen-main').classList.contains('active');
+
+  if (camOpen)  { capturePhoto(); return; }
+  if (noteOpen) { saveNote(); return; }
+  if (mainVis)  { openCamera(); }
+});
+
+// ════════════════════════════════════════════════════════
+// SERVICE WORKER
+// ════════════════════════════════════════════════════════
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+
+async function init() {
+  db = await openDB();
+  btKey = localStorage.getItem('btKey') || ' ';
+  await loadJobs();
+}
+
+init().catch(err => {
+  document.body.innerHTML = `<div style="padding:40px;color:#f0a020;font-family:monospace">Init error: ${err.message}</div>`;
+});
+</script>
+</body>
+</html>
