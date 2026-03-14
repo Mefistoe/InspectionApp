@@ -294,27 +294,19 @@ html, body {
 }
 .icon-btn:active { background: var(--surface2); color: var(--text); }
 
-/* Location bar */
+/* ═══════════════ LOCATION BAR (typeahead) ═══════════════ */
+
 .location-bar {
   background: var(--surface2);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-}
-
-.location-btn {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
   min-height: 62px;
-  padding: 10px 16px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  -webkit-user-select: none;
+  padding: 10px 12px 10px 16px;
 }
-.location-btn:active { background: var(--surface3); }
 
 .loc-dot {
   width: 9px; height: 9px;
@@ -329,7 +321,7 @@ html, body {
   50%      { box-shadow: 0 0 0 6px transparent; }
 }
 
-.loc-label-wrap {
+.loc-input-wrap {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -337,18 +329,22 @@ html, body {
   gap: 2px;
 }
 
-.loc-name {
+.loc-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--text);
   text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0;
+  -webkit-appearance: none;
+  caret-color: var(--amber);
 }
-.loc-name.unset {
+.loc-input::placeholder {
   color: var(--amber);
   font-size: 13px;
   animation: loc-blink 2s ease infinite;
@@ -357,17 +353,81 @@ html, body {
   0%,100% { opacity: 1; }
   50%     { opacity: 0.45; }
 }
+.loc-input:focus::placeholder { animation: none; opacity: 0.5; }
 
 .loc-count {
   font-family: var(--mono);
   font-size: 10px;
   color: var(--text-dim);
+  min-height: 14px;
 }
 
-.loc-chevron {
+.loc-rooms-btn {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none;
   color: var(--text-dim);
-  font-size: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
   flex-shrink: 0;
+  transition: color 0.12s, background 0.12s;
+}
+.loc-rooms-btn:active { background: var(--surface3); color: var(--amber); }
+
+/* Suggestions dropdown */
+#loc-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  max-height: 230px;
+  overflow-y: auto;
+  z-index: 50;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+#loc-suggestions.hidden { display: none; }
+
+.sug-group-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+  padding: 10px 14px 5px;
+}
+
+.sug-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.08s;
+  -webkit-user-select: none;
+}
+.sug-item:last-child { border-bottom: none; }
+.sug-item:active, .sug-item.highlighted { background: var(--surface2); }
+
+.sug-item-name {
+  font-size: 15px;
+  color: var(--text);
+  text-transform: none;
+  font-family: var(--sans);
+  font-weight: 400;
+}
+
+.sug-item-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--amber-dim);
 }
 
 /* Timeline */
@@ -416,6 +476,7 @@ html, body {
   cursor: pointer;
   transition: opacity 0.1s;
   background: var(--surface2);
+  /* No loading="lazy" — inline base64 data URIs must load eagerly in Safari */
 }
 .photo-thumb:active { opacity: 0.75; }
 
@@ -554,7 +615,7 @@ html, body {
   padding: calc(var(--safe-top) + 14px) 16px 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
 }
 
@@ -566,35 +627,45 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-align: center;
 }
 
-.cam-close {
-  width: 40px; height: 40px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.2);
+.cam-spacer { flex: 1; }
+
+/* Bottom row: [CLOSE] [SHUTTER] [spacer] */
+.cam-bottom {
+  padding: 20px 32px calc(var(--safe-bottom) + 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+}
+
+/* Large close button — bottom left, thumb reach */
+.cam-close-btn {
+  width: 64px; height: 64px;
   border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.35);
   color: #fff;
-  font-size: 18px;
+  font-size: 22px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  flex-shrink: 0;
+  transition: background 0.1s;
 }
-.cam-close:active { background: rgba(0,0,0,0.65); }
+.cam-close-btn:active { background: rgba(0,0,0,0.7); }
 
-.cam-spacer { flex: 1; }
-
-.cam-bottom {
-  padding: 20px 0 calc(var(--safe-bottom) + 24px);
+.cam-shutter-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
-  gap: 40px;
 }
 
 .capture-ring {
-  width: 74px; height: 74px;
+  width: 78px; height: 78px;
   border: 3px solid rgba(255,255,255,0.85);
   border-radius: 50%;
   cursor: pointer;
@@ -604,12 +675,15 @@ html, body {
 .capture-ring:active { transform: scale(0.93); }
 
 .capture-inner {
-  width: 58px; height: 58px;
+  width: 62px; height: 62px;
   background: rgba(255,255,255,0.9);
   border-radius: 50%;
   transition: transform 0.1s;
 }
 .capture-ring:active .capture-inner { transform: scale(0.88); }
+
+/* Right spacer matches close button width for centering shutter */
+.cam-right-spacer { width: 64px; flex-shrink: 0; }
 
 .cam-flash {
   position: absolute; inset: 0;
@@ -793,122 +867,135 @@ html, body {
 }
 .btn-save:active { opacity: 0.8; }
 
-/* ═══════════════ LOCATION PICKER ═══════════════ */
+/* ═══════════════ ROOMS PANEL ═══════════════ */
 
-#overlay-location {
+#overlay-rooms {
   position: fixed; inset: 0;
   z-index: 300;
   background: var(--bg);
   display: none;
   flex-direction: column;
 }
-#overlay-location.active { display: flex; }
+#overlay-rooms.active { display: flex; }
 
-.picker-header {
+.rooms-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: calc(var(--safe-top) + 10px) 16px 10px;
+  padding: calc(var(--safe-top) + 12px) 16px 12px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
-.picker-title {
+.rooms-title {
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--text);
   flex: 1;
   text-transform: uppercase;
 }
 
-.search-wrap {
-  padding: 10px 14px;
-  flex-shrink: 0;
+.rooms-subtitle {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
 }
 
-.loc-search {
-  width: 100%;
-  height: 44px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 9px;
-  color: var(--text);
-  font-size: 16px;
-  padding: 0 14px;
-  outline: none;
-  transition: border-color 0.12s;
-  -webkit-appearance: none;
-}
-.loc-search:focus { border-color: var(--amber); }
-.loc-search::placeholder { color: var(--text-dim); }
-
-#location-list {
+#rooms-list {
   flex: 1;
   overflow-y: auto;
-  padding: 0 14px 10px;
+  padding: 10px 14px calc(var(--safe-bottom) + 14px);
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.loc-group-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  color: var(--amber-dim);
-  text-transform: uppercase;
-  padding: 14px 2px 7px;
-}
-
-.loc-item {
+.room-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 50px;
-  padding: 0 13px;
+  gap: 12px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  margin-bottom: 6px;
+  border-radius: 10px;
+  padding: 10px 12px;
   cursor: pointer;
   transition: border-color 0.1s;
   -webkit-user-select: none;
+  min-height: 68px;
 }
-.loc-item:active { border-color: var(--amber); background: var(--surface2); }
-.loc-item.current { border-color: var(--amber); background: var(--amber-glow); }
+.room-card:active { border-color: var(--amber); background: var(--surface2); }
+.room-card.current-room { border-color: var(--amber); background: var(--amber-glow); }
 
-.loc-item-name {
+.room-thumb {
+  width: 48px; height: 48px;
+  border-radius: 7px;
+  object-fit: cover;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.room-thumb-placeholder {
+  width: 48px; height: 48px;
+  border-radius: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 18px;
+  opacity: 0.4;
+}
+
+.room-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.room-name {
   font-size: 15px;
+  font-weight: 500;
   color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.loc-item-count {
+.room-meta {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--text-dim);
 }
 
-.btn-add-custom {
-  margin: 6px 14px calc(var(--safe-bottom) + 14px);
-  height: 50px;
-  background: none;
-  border: 1px dashed var(--border2);
-  border-radius: 8px;
-  color: var(--amber);
-  font-family: var(--mono);
+.room-arrow {
+  color: var(--text-dim);
   font-size: 12px;
-  letter-spacing: 0.08em;
-  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.rooms-empty {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  flex-shrink: 0;
-  transition: border-color 0.12s;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  gap: 10px;
+  text-align: center;
 }
-.btn-add-custom:active { border-color: var(--amber); }
 
 /* ═══════════════ SETTINGS ═══════════════ */
 
@@ -1077,7 +1164,6 @@ html, body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ═══════════════ SCROLLBAR HIDING ═══════════════ */
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
 </style>
@@ -1138,21 +1224,28 @@ html, body {
     </div>
   </div>
 
-  <div class="location-bar">
-    <button class="location-btn" onclick="showLocationPicker()">
-      <div class="loc-dot"></div>
-      <div class="loc-label-wrap">
-        <div class="loc-name unset" id="loc-name">TAP TO SELECT LOCATION</div>
-        <div class="loc-count" id="loc-count"></div>
-      </div>
-      <div class="loc-chevron">▼</div>
-    </button>
+  <!-- Location typeahead bar -->
+  <div class="location-bar" id="location-bar">
+    <div class="loc-dot"></div>
+    <div class="loc-input-wrap">
+      <input type="text" class="loc-input" id="loc-input"
+             placeholder="TAP TO SET LOCATION"
+             autocomplete="off" autocapitalize="words" spellcheck="false"
+             oninput="onLocInput(this.value)"
+             onfocus="onLocFocus()"
+             onblur="onLocBlur()"
+             onkeydown="onLocKey(event)">
+      <div class="loc-count" id="loc-count"></div>
+    </div>
+    <button class="loc-rooms-btn" onclick="openRoomsPanel()" title="All rooms">⊞</button>
+    <!-- Suggestions dropdown — inside location-bar for absolute positioning -->
+    <div id="loc-suggestions" class="hidden"></div>
   </div>
 
   <div id="timeline">
     <div class="tl-empty" id="tl-empty">
       <div class="tl-empty-icon">◎</div>
-      <div>Select a location to begin</div>
+      <div>Set a location to begin</div>
     </div>
   </div>
 
@@ -1171,15 +1264,20 @@ html, body {
   <video id="viewfinder" autoplay playsinline muted></video>
   <div class="cam-flash" id="cam-flash"></div>
   <div class="cam-overlay">
+    <!-- Location label at top, no close button here -->
     <div class="cam-top">
       <div class="cam-loc" id="cam-loc-label">—</div>
-      <button class="cam-close" onclick="closeCamera()">✕</button>
     </div>
     <div class="cam-spacer"></div>
+    <!-- Controls at bottom: close button (left) + shutter (center) + spacer (right) -->
     <div class="cam-bottom">
-      <button class="capture-ring" id="btn-capture" onclick="capturePhoto()">
-        <div class="capture-inner"></div>
-      </button>
+      <button class="cam-close-btn" onclick="closeCamera()">✕</button>
+      <div class="cam-shutter-wrap">
+        <button class="capture-ring" id="btn-capture" onclick="capturePhoto()">
+          <div class="capture-inner"></div>
+        </button>
+      </div>
+      <div class="cam-right-spacer"></div>
     </div>
   </div>
 </div>
@@ -1205,17 +1303,16 @@ html, body {
   </div>
 </div>
 
-<!-- ══════════════ OVERLAY: LOCATION PICKER ══════════════ -->
-<div id="overlay-location">
-  <div class="picker-header">
-    <button class="icon-btn" onclick="closeLocationPicker()">✕</button>
-    <div class="picker-title">Select Location</div>
+<!-- ══════════════ OVERLAY: ROOMS PANEL ══════════════ -->
+<div id="overlay-rooms">
+  <div class="rooms-header">
+    <button class="back-btn" onclick="closeRoomsPanel()">✕</button>
+    <div>
+      <div class="rooms-title">Rooms</div>
+      <div class="rooms-subtitle" id="rooms-subtitle">All visited locations</div>
+    </div>
   </div>
-  <div class="search-wrap">
-    <input type="text" class="loc-search" id="loc-search" placeholder="Search locations…" oninput="filterLocations(this.value)" autocapitalize="off" spellcheck="false">
-  </div>
-  <div id="location-list"></div>
-  <button class="btn-add-custom" onclick="addCustomLocation()">+ Add Custom Location</button>
+  <div id="rooms-list"></div>
 </div>
 
 <!-- ══════════════ OVERLAY: SETTINGS ══════════════ -->
@@ -1275,17 +1372,20 @@ html, body {
 // ════════════════════════════════════════════════════════
 
 const LOCATION_GROUPS = [
-  { g: 'EXTERIOR', locs: ['Front Exterior','Rear Exterior','Left Side Exterior','Right Side Exterior','Roof','Deck / Patio','Driveway / Hardscape','Foundation Exterior','Garage Exterior'] },
-  { g: 'GARAGE', locs: ['Garage Interior','Garage Ceiling','Garage Attic Space'] },
-  { g: 'CRAWLSPACE', locs: ['Crawlspace — Entry','Crawlspace — General','Crawlspace — Far End','Crawlspace — Perimeter','Crawlspace — Under Addition'] },
-  { g: 'BASEMENT', locs: ['Basement — Utility / Mechanical Room','Basement — Laundry','Basement — Bathroom','Basement — Bedroom','Basement — Finished Living Area','Basement — Storage Area','Basement — Stairwell','Basement — Sump Area','Basement — Bar / Kitchenette'] },
-  { g: 'GROUND FLOOR', locs: ['Entry / Foyer','Living Room','Family Room','Dining Room','Kitchen','Powder Room','Laundry Room','Office / Study','Hallway','Mudroom','Pantry','Sunroom','Under Stairs'] },
-  { g: 'SECOND FLOOR', locs: ['Master Bedroom','Master Bathroom','Bedroom 2','Bedroom 3','Bedroom 4','Bathroom (2nd Floor)','Hallway (2nd Floor)','Laundry Room (2nd Floor)','Walk-in Closet','Linen Closet'] },
-  { g: 'THIRD FLOOR', locs: ['Bedroom (3rd Floor)','Bathroom (3rd Floor)','Bonus Room','Hallway (3rd Floor)'] },
-  { g: 'ATTIC', locs: ['Attic — Main Access','Attic — General','Attic — Knee Wall','Attic — Over Garage','Attic — Low-Slope Section'] },
-  { g: 'HVAC / MECHANICAL', locs: ['Air Handling Unit','Furnace / Boiler','Ductwork — Supply','Ductwork — Return','ERV / HRV Unit','Water Heater','Radon Mitigation System','Whole-House Dehumidifier'] },
-  { g: 'EXTENDED', locs: ['Library','Home Theater','Wine Cellar','Guest Suite','Guest Bathroom','In-Law Suite','Exercise Room','Game Room','Pool Equipment Room','Workshop','Sauna / Steam Room','Safe Room'] }
+  { g: 'Exterior', locs: ['Front Exterior','Rear Exterior','Left Side Exterior','Right Side Exterior','Roof','Deck / Patio','Driveway / Hardscape','Foundation Exterior','Garage Exterior'] },
+  { g: 'Garage', locs: ['Garage Interior','Garage Ceiling','Garage Attic Space'] },
+  { g: 'Crawlspace', locs: ['Crawlspace — Entry','Crawlspace — General','Crawlspace — Far End','Crawlspace — Perimeter','Crawlspace — Under Addition'] },
+  { g: 'Basement', locs: ['Basement — Utility / Mechanical Room','Basement — Laundry','Basement — Bathroom','Basement — Bedroom','Basement — Finished Living Area','Basement — Storage Area','Basement — Stairwell','Basement — Sump Area','Basement — Bar / Kitchenette'] },
+  { g: 'Ground Floor', locs: ['Entry / Foyer','Living Room','Family Room','Dining Room','Kitchen','Powder Room','Laundry Room','Office / Study','Hallway','Mudroom','Pantry','Sunroom','Under Stairs'] },
+  { g: 'Second Floor', locs: ['Master Bedroom','Master Bathroom','Bedroom 2','Bedroom 3','Bedroom 4','Bathroom (2nd Floor)','Hallway (2nd Floor)','Laundry Room (2nd Floor)','Walk-in Closet','Linen Closet'] },
+  { g: 'Third Floor', locs: ['Bedroom (3rd Floor)','Bathroom (3rd Floor)','Bonus Room','Hallway (3rd Floor)'] },
+  { g: 'Attic', locs: ['Attic — Main Access','Attic — General','Attic — Knee Wall','Attic — Over Garage','Attic — Low-Slope Section'] },
+  { g: 'HVAC / Mechanical', locs: ['Air Handling Unit','Furnace / Boiler','Ductwork — Supply','Ductwork — Return','ERV / HRV Unit','Water Heater','Radon Mitigation System','Whole-House Dehumidifier'] },
+  { g: 'Extended', locs: ['Library','Home Theater','Wine Cellar','Guest Suite','Guest Bathroom','In-Law Suite','Exercise Room','Game Room','Pool Equipment Room','Workshop','Sauna / Steam Room','Safe Room'] }
 ];
+
+// Flat list for typeahead
+const ALL_STANDARD_LOCS = LOCATION_GROUPS.flatMap(g => g.locs);
 
 const S520_WORDS = ['mold','fungal','fungus','mould','moldy','mouldy','growth','chaetomium','aspergillus','penicillium','stachybotrys','rot','rotted','rotten','remediat','condition 3','cat 3','category 3','iicrc','contamina','cladosporium'];
 
@@ -1294,16 +1394,18 @@ const S520_WORDS = ['mold','fungal','fungus','mould','moldy','mouldy','growth','
 // ════════════════════════════════════════════════════════
 
 let db = null;
-let job = null;           // current job object
-let locName = null;       // current location name string
+let job = null;
+let locName = null;
 let locCounts = {};       // locationName → entry count
-let editId = null;        // entry id being edited
+let locOrder = [];        // locationNames in first-appearance order
+let editId = null;
 let s520On = false;
 let cameraStream = null;
 let recognizer = null;
 let micActive = false;
 let btKey = ' ';
 let learningKey = false;
+let locBlurTimer = null;
 
 // ════════════════════════════════════════════════════════
 // INDEXEDDB
@@ -1471,32 +1573,149 @@ async function startJob(j) {
 }
 
 // ════════════════════════════════════════════════════════
-// LOCATION BAR
+// LOCATION BAR — TYPEAHEAD
 // ════════════════════════════════════════════════════════
 
 async function refreshCounts() {
   if (!job) return;
   const entries = await jobEntries(job.id);
   locCounts = {};
-  entries.forEach(e => { locCounts[e.locName] = (locCounts[e.locName] || 0) + 1; });
+  locOrder = [];
+  // sort by ts to determine first-appearance order
+  entries.sort((a,b) => a.ts - b.ts).forEach(e => {
+    if (e.locName) {
+      locCounts[e.locName] = (locCounts[e.locName] || 0) + 1;
+      if (!locOrder.includes(e.locName)) locOrder.push(e.locName);
+    }
+  });
 }
 
 function updateLocBar() {
-  const nameEl = document.getElementById('loc-name');
-  const cntEl  = document.getElementById('loc-count');
-  const camEl  = document.getElementById('cam-loc-label');
+  const input = document.getElementById('loc-input');
+  const cntEl = document.getElementById('loc-count');
+  const camEl = document.getElementById('cam-loc-label');
 
   if (!locName) {
-    nameEl.textContent = 'TAP TO SELECT LOCATION';
-    nameEl.classList.add('unset');
+    input.value = '';
+    input.placeholder = 'TAP TO SET LOCATION';
     cntEl.textContent = '';
     camEl.textContent = '—';
   } else {
-    nameEl.textContent = locName;
-    nameEl.classList.remove('unset');
+    input.value = locName;
     const n = locCounts[locName] || 0;
     cntEl.textContent = n ? `${n} capture${n > 1 ? 's' : ''}` : '';
     camEl.textContent = locName;
+  }
+}
+
+function onLocFocus() {
+  // Show suggestions immediately on focus
+  const input = document.getElementById('loc-input');
+  buildSuggestions(input.value);
+  document.getElementById('loc-suggestions').classList.remove('hidden');
+}
+
+function onLocInput(val) {
+  buildSuggestions(val);
+  document.getElementById('loc-suggestions').classList.remove('hidden');
+}
+
+function buildSuggestions(query) {
+  const q = query.trim().toLowerCase();
+  const sugEl = document.getElementById('loc-suggestions');
+  let html = '';
+
+  // Section 1: rooms already in this job
+  const visitedFiltered = locOrder.filter(n => !q || n.toLowerCase().includes(q));
+  if (visitedFiltered.length) {
+    html += `<div class="sug-group-label">This Inspection</div>`;
+    visitedFiltered.forEach(name => {
+      const cnt = locCounts[name] || 0;
+      const safe = name.replace(/'/g, "\\'");
+      html += `<div class="sug-item" onmousedown="pickSuggestion('${safe}')">
+        <span class="sug-item-name">${name}</span>
+        <span class="sug-item-count">${cnt} capture${cnt !== 1 ? 's' : ''}</span>
+      </div>`;
+    });
+  }
+
+  // Section 2: standard locations not already in this job
+  const alreadyVisited = new Set(locOrder.map(n => n.toLowerCase()));
+  const standardFiltered = ALL_STANDARD_LOCS.filter(n =>
+    !alreadyVisited.has(n.toLowerCase()) && (!q || n.toLowerCase().includes(q))
+  );
+  if (standardFiltered.length) {
+    const label = visitedFiltered.length ? 'Standard' : (q ? 'Matching' : 'Standard Locations');
+    html += `<div class="sug-group-label">${label}</div>`;
+    standardFiltered.slice(0, 30).forEach(name => {
+      const safe = name.replace(/'/g, "\\'");
+      html += `<div class="sug-item" onmousedown="pickSuggestion('${safe}')">
+        <span class="sug-item-name">${name}</span>
+        <span class="sug-item-count"></span>
+      </div>`;
+    });
+  }
+
+  // If they've typed something not in the list at all, offer to use it directly
+  if (q && !ALL_STANDARD_LOCS.some(n => n.toLowerCase() === q) && !locOrder.some(n => n.toLowerCase() === q)) {
+    const display = query.trim();
+    const safe = display.replace(/'/g, "\\'");
+    html = `<div class="sug-group-label">Use As-Is</div>
+      <div class="sug-item" onmousedown="pickSuggestion('${safe}')">
+        <span class="sug-item-name">➜ ${display}</span>
+        <span class="sug-item-count">New</span>
+      </div>` + html;
+  }
+
+  sugEl.innerHTML = html || '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;font-family:var(--mono)">No matches</div>';
+}
+
+function pickSuggestion(name) {
+  clearTimeout(locBlurTimer);
+  setLocation(name);
+}
+
+function onLocBlur() {
+  // Delay hide so tap-on-suggestion fires first (onmousedown)
+  locBlurTimer = setTimeout(() => {
+    hideSuggestions();
+    // If they typed something and blurred without picking, commit what's typed
+    const val = document.getElementById('loc-input').value.trim();
+    if (val && val !== locName) {
+      setLocation(val);
+    } else if (!val && locName) {
+      // Restore previous value if they cleared and blurred
+      document.getElementById('loc-input').value = locName;
+    }
+  }, 200);
+}
+
+function onLocKey(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = document.getElementById('loc-input').value.trim();
+    if (val) {
+      setLocation(val);
+      document.getElementById('loc-input').blur();
+    }
+  } else if (e.key === 'Escape') {
+    document.getElementById('loc-input').blur();
+    hideSuggestions();
+  }
+}
+
+function hideSuggestions() {
+  document.getElementById('loc-suggestions').classList.add('hidden');
+}
+
+function setLocation(name) {
+  locName = name.trim();
+  hideSuggestions();
+  updateLocBar();
+  renderTimeline();
+  // Save to visited order if new
+  if (!locOrder.includes(locName)) {
+    locOrder.push(locName);
   }
 }
 
@@ -1510,7 +1729,7 @@ async function renderTimeline() {
 
   if (!locName) {
     container.innerHTML = '';
-    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>Select a location to begin</div>';
+    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>Set a location to begin</div>';
     container.appendChild(emptyEl);
     return;
   }
@@ -1534,8 +1753,9 @@ async function renderTimeline() {
 
     if (entry.type === 'photo') {
       el.className = 'entry-photo';
+      // Note: NO loading="lazy" — base64 data URIs don't lazy-load reliably in iOS Safari
       el.innerHTML = `
-        <img class="photo-thumb" src="${entry.thumb}" alt="" loading="lazy" onclick="openLightbox('${entry.id}')">
+        <img class="photo-thumb" src="${entry.thumb}" alt="" onclick="openLightbox('${entry.id}')">
         <div class="entry-meta">
           <div class="entry-time">${fmtTime(entry.ts)}</div>
           <div class="entry-loc-tag">${esc(entry.locName)}</div>
@@ -1561,7 +1781,10 @@ async function renderTimeline() {
 // ════════════════════════════════════════════════════════
 
 async function openCamera() {
-  if (!locName) { showLocationPicker(); return; }
+  if (!locName) {
+    document.getElementById('loc-input').focus();
+    return;
+  }
 
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
@@ -1596,12 +1819,14 @@ async function capturePhoto() {
   c.getContext('2d').drawImage(vid, 0, 0);
   const img = c.toDataURL('image/jpeg', 0.85);
 
-  // Thumbnail
+  // Thumbnail (square crop from center for compact display)
   const t = document.createElement('canvas');
-  const ratio = vid.videoHeight / vid.videoWidth;
-  t.width = 240; t.height = Math.round(240 * ratio);
-  t.getContext('2d').drawImage(vid, 0, 0, t.width, t.height);
-  const thumb = t.toDataURL('image/jpeg', 0.7);
+  const shortSide = Math.min(vid.videoWidth, vid.videoHeight);
+  t.width = 240; t.height = 240;
+  const sx = (vid.videoWidth - shortSide) / 2;
+  const sy = (vid.videoHeight - shortSide) / 2;
+  t.getContext('2d').drawImage(vid, sx, sy, shortSide, shortSide, 0, 0, 240, 240);
+  const thumb = t.toDataURL('image/jpeg', 0.72);
 
   const entry = { id: uid(), jobId: job.id, locName, type: 'photo', ts: Date.now(), img, thumb };
   await put('entries', entry);
@@ -1616,7 +1841,10 @@ async function capturePhoto() {
 // ════════════════════════════════════════════════════════
 
 function openNote() {
-  if (!locName) { showLocationPicker(); return; }
+  if (!locName) {
+    document.getElementById('loc-input').focus();
+    return;
+  }
   editId = null;
   s520On = false;
   document.getElementById('note-textarea').value = '';
@@ -1718,62 +1946,69 @@ function stopMic() {
 }
 
 // ════════════════════════════════════════════════════════
-// LOCATION PICKER
+// ROOMS PANEL
 // ════════════════════════════════════════════════════════
 
-function showLocationPicker() {
-  document.getElementById('loc-search').value = '';
-  renderLocList('');
-  showOverlay('overlay-location');
-  setTimeout(() => document.getElementById('loc-search').focus(), 200);
-}
+async function openRoomsPanel() {
+  const entries = await jobEntries(job.id);
 
-function closeLocationPicker() { hideOverlay('overlay-location'); }
+  // Build per-room data: count and most recent photo thumb
+  const roomData = {};
+  entries.forEach(e => {
+    if (!e.locName) return;
+    if (!roomData[e.locName]) roomData[e.locName] = { count: 0, lastPhoto: null, lastTs: 0 };
+    roomData[e.locName].count++;
+    if (e.type === 'photo' && e.ts > roomData[e.locName].lastTs) {
+      roomData[e.locName].lastPhoto = e.thumb;
+      roomData[e.locName].lastTs = e.ts;
+    }
+  });
 
-function renderLocList(filter) {
-  const f = filter.toLowerCase().trim();
-  const custom = JSON.parse(localStorage.getItem('customLocs') || '[]');
-  const groups = custom.length
-    ? [...LOCATION_GROUPS, { g: 'CUSTOM', locs: custom }]
-    : LOCATION_GROUPS;
+  const rooms = locOrder; // in first-appearance order
+  const el = document.getElementById('rooms-list');
+  const subtitle = document.getElementById('rooms-subtitle');
 
-  let html = '';
-  for (const { g, locs } of groups) {
-    const filtered = f ? locs.filter(l => l.toLowerCase().includes(f)) : locs;
-    if (!filtered.length) continue;
-    html += `<div class="loc-group-label">${g}</div>`;
-    filtered.forEach(loc => {
-      const cnt  = locCounts[loc] || 0;
-      const cur  = loc === locName ? ' current' : '';
-      const safe = loc.replace(/'/g,"\\'");
-      html += `
-        <div class="loc-item${cur}" onclick="pickLocation('${safe}')">
-          <div class="loc-item-name">${loc}</div>
-          <div class="loc-item-count">${cnt || ''}</div>
-        </div>`;
-    });
+  subtitle.textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''} visited`;
+
+  if (!rooms.length) {
+    el.innerHTML = '<div class="rooms-empty"><div style="font-size:28px;opacity:0.2;margin-bottom:10px">⊞</div><div>No rooms visited yet</div></div>';
+    showOverlay('overlay-rooms');
+    return;
   }
 
-  document.getElementById('location-list').innerHTML =
-    html || '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:24px;font-family:var(--mono)">No matches</div>';
+  el.innerHTML = rooms.map(name => {
+    const data = roomData[name] || { count: 0, lastPhoto: null };
+    const isCurrent = name === locName;
+    const thumbHtml = data.lastPhoto
+      ? `<img class="room-thumb" src="${data.lastPhoto}" alt="">`
+      : `<div class="room-thumb-placeholder">◎</div>`;
+    const safe = name.replace(/'/g, "\\'");
+    return `
+      <div class="room-card${isCurrent ? ' current-room' : ''}" onclick="jumpToRoom('${safe}')">
+        ${thumbHtml}
+        <div class="room-info">
+          <div class="room-name">${name}</div>
+          <div class="room-meta">${data.count} capture${data.count !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="room-arrow">›</div>
+      </div>`;
+  }).join('');
+
+  showOverlay('overlay-rooms');
 }
 
-function filterLocations(v) { renderLocList(v); }
-
-function pickLocation(name) {
-  locName = name;
-  closeLocationPicker();
-  updateLocBar();
-  renderTimeline();
+function closeRoomsPanel() {
+  hideOverlay('overlay-rooms');
 }
 
-function addCustomLocation() {
-  const name = prompt('Location name:');
-  if (!name || !name.trim()) return;
-  const trimmed = name.trim();
-  const stored = JSON.parse(localStorage.getItem('customLocs') || '[]');
-  if (!stored.includes(trimmed)) { stored.push(trimmed); localStorage.setItem('customLocs', JSON.stringify(stored)); }
-  pickLocation(trimmed);
+function jumpToRoom(name) {
+  closeRoomsPanel();
+  setLocation(name);
+  // Scroll timeline to top after switch
+  setTimeout(() => {
+    const tl = document.getElementById('timeline');
+    if (tl) tl.scrollTop = 0;
+  }, 100);
 }
 
 // ════════════════════════════════════════════════════════
@@ -1803,10 +2038,10 @@ async function exportJSON() {
 
   // Build location order from first-appearance
   const seen = [];
-  entries.sort((a,b) => a.ts - b.ts).forEach(e => { if (!seen.includes(e.locName)) seen.push(e.locName); });
+  entries.sort((a,b) => a.ts - b.ts).forEach(e => { if (e.locName && !seen.includes(e.locName)) seen.push(e.locName); });
 
   const locMap = {};
-  entries.forEach(e => { (locMap[e.locName] = locMap[e.locName] || []).push(e); });
+  entries.forEach(e => { if (e.locName) (locMap[e.locName] = locMap[e.locName] || []).push(e); });
 
   const out = {
     schema_version: '1.0',
@@ -1833,7 +2068,6 @@ async function exportJSON() {
   const json = JSON.stringify(out, null, 2);
   const filename = `${job.id}_${job.client || 'inspection'}.json`;
 
-  // iOS-safe download
   try {
     const blob = new Blob([json], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
@@ -1844,7 +2078,6 @@ async function exportJSON() {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   } catch(e) {
-    // Fallback: data URI
     const uri = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
     const a = document.createElement('a');
     a.href = uri; a.download = filename; a.click();
