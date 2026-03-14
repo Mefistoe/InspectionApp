@@ -1,4 +1,4 @@
-# AURA Field
+# AURA InspectionApp
 
 IEQ field inspection capture tool — offline-first PWA for iPhone.
 
@@ -11,7 +11,7 @@ IEQ field inspection capture tool — offline-first PWA for iPhone.
    - `manifest.json`
    - `icon.svg`
 3. In the repo → Settings → Pages → Source: **Deploy from a branch** → Branch: `main` / `root`
-4. GitHub Pages URL will be: `https://[yourusername].github.io/aura-field/`
+4. GitHub Pages URL will be: `https://mefistoe.github.io/inspectionapp/`
 
 ## iPhone Setup (one time per device)
 
