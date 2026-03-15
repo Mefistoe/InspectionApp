@@ -29,13 +29,10 @@
   --red:          #d95050;
   --red-bg:       rgba(217,80,80,0.10);
   --red-border:   rgba(217,80,80,0.35);
-  --green:        #4aac78;
   --mono:         ui-monospace,'SF Mono',Menlo,'Cascadia Code',monospace;
   --sans:         -apple-system,'SF Pro Text',system-ui,sans-serif;
   --safe-top:     env(safe-area-inset-top, 0px);
   --safe-bottom:  env(safe-area-inset-bottom, 0px);
-  --safe-left:    env(safe-area-inset-left, 0px);
-  --safe-right:   env(safe-area-inset-right, 0px);
 }
 
 html, body {
@@ -52,7 +49,6 @@ html, body {
 }
 
 /* ═══════════════ SCREENS ═══════════════ */
-
 .screen {
   position: fixed; inset: 0;
   display: flex; flex-direction: column;
@@ -62,10 +58,7 @@ html, body {
 .screen.hidden { display: none !important; }
 
 /* ═══════════════ JOB LIST ═══════════════ */
-
-#screen-jobs {
-  padding: calc(var(--safe-top) + 20px) 20px 0;
-}
+#screen-jobs { padding: calc(var(--safe-top) + 20px) 20px 0; }
 
 .wordmark {
   font-family: var(--mono);
@@ -75,7 +68,6 @@ html, body {
   color: var(--amber);
   margin-bottom: 2px;
 }
-
 .screen-subtitle {
   font-family: var(--mono);
   font-size: 10px;
@@ -84,7 +76,6 @@ html, body {
   margin-bottom: 28px;
   text-transform: uppercase;
 }
-
 .job-list {
   flex: 1;
   overflow-y: auto;
@@ -92,7 +83,6 @@ html, body {
   padding: 0 20px;
   -webkit-overflow-scrolling: touch;
 }
-
 .job-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -100,202 +90,84 @@ html, body {
   padding: 15px 16px;
   margin-bottom: 10px;
   cursor: pointer;
-  transition: border-color 0.12s;
   -webkit-user-select: none;
 }
 .job-card:active { border-color: var(--amber); background: var(--surface2); }
-
-.job-card-id {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--amber);
-  letter-spacing: 0.1em;
-  margin-bottom: 4px;
-}
-.job-card-client {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 3px;
-}
-.job-card-meta {
-  font-size: 12px;
-  color: var(--text-dim);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 48px 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--text-dim);
-  text-transform: uppercase;
-}
+.job-card-id { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--amber); letter-spacing: 0.1em; margin-bottom: 4px; }
+.job-card-client { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.job-card-meta { font-size: 12px; color: var(--text-dim); }
+.empty-state { text-align: center; padding: 48px 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
 .empty-state .e-icon { font-size: 28px; margin-bottom: 12px; opacity: 0.3; }
 
 .btn-primary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  height: 58px;
-  background: var(--amber);
-  color: #0c0f0d;
-  border: none;
-  border-radius: 10px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; height: 58px;
+  background: var(--amber); color: #0c0f0d;
+  border: none; border-radius: 10px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; flex-shrink: 0;
   margin: 16px 0 calc(var(--safe-bottom) + 16px);
   transition: opacity 0.1s;
 }
 .btn-primary:active { opacity: 0.8; }
 
 /* ═══════════════ NEW JOB ═══════════════ */
-
-#screen-new-job {
-  padding: calc(var(--safe-top) + 0px) 0 0;
-  overflow-y: auto;
-}
+#screen-new-job { padding: 0; overflow-y: auto; }
 
 .screen-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex; align-items: center; gap: 12px;
   padding: calc(var(--safe-top) + 12px) 16px 12px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
-
-.screen-header-title {
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--text);
-}
-
+.screen-header-title { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.1em; color: var(--text); }
 .back-btn {
   width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
-  background: none; border: none;
-  color: var(--amber); font-size: 20px;
-  cursor: pointer; border-radius: 8px;
-  flex-shrink: 0;
+  background: none; border: none; color: var(--amber); font-size: 20px;
+  cursor: pointer; border-radius: 8px; flex-shrink: 0;
 }
 .back-btn:active { background: var(--surface2); }
-
-.form-body {
-  padding: 20px 16px;
-}
-
+.form-body { padding: 20px 16px; }
 .form-group { margin-bottom: 18px; }
-
-.form-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  margin-bottom: 7px;
-}
-
+.form-label { display: block; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 7px; }
 .form-input {
-  width: 100%;
-  height: 50px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 16px;
-  padding: 0 14px;
-  outline: none;
-  transition: border-color 0.12s;
+  width: 100%; height: 50px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-family: var(--sans); font-size: 16px;
+  padding: 0 14px; outline: none; transition: border-color 0.12s;
   -webkit-appearance: none;
 }
 .form-input:focus { border-color: var(--amber); }
 .form-input::placeholder { color: var(--text-dim); }
-
-.form-hint {
-  font-size: 11px;
-  color: var(--text-dim);
-  margin-top: 5px;
-}
+.form-hint { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
 
 /* ═══════════════ MAIN CAPTURE ═══════════════ */
-
-#screen-main {
-  display: none;
-}
+#screen-main { display: none; }
 #screen-main.active { display: flex; }
 
-/* Top bar */
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   padding: calc(var(--safe-top) + 10px) 16px 10px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  gap: 12px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  flex-shrink: 0; gap: 12px;
 }
-
-.topbar-job {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-
-.topbar-id {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--amber);
-}
-
-.topbar-client {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.topbar-right {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
+.topbar-job { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.topbar-id { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.12em; color: var(--amber); }
+.topbar-client { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-right { display: flex; gap: 2px; flex-shrink: 0; }
 .icon-btn {
   width: 42px; height: 42px;
   display: flex; align-items: center; justify-content: center;
-  background: none; border: none;
-  color: var(--text-dim);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 17px;
+  background: none; border: none; color: var(--text-dim);
+  border-radius: 8px; cursor: pointer; font-size: 17px;
   transition: color 0.12s, background 0.12s;
 }
 .icon-btn:active { background: var(--surface2); color: var(--text); }
 
-/* ═══════════════ LOCATION BAR (typeahead) ═══════════════ */
-
+/* ═══════════════ LOCATION BAR ═══════════════ */
 .location-bar {
   background: var(--surface2);
   border-bottom: 1px solid var(--border);
@@ -307,7 +179,6 @@ html, body {
   min-height: 62px;
   padding: 10px 12px 10px 16px;
 }
-
 .loc-dot {
   width: 9px; height: 9px;
   border-radius: 50%;
@@ -320,849 +191,252 @@ html, body {
   0%,100% { box-shadow: 0 0 0 3px var(--amber-glow); }
   50%      { box-shadow: 0 0 0 6px transparent; }
 }
-
-.loc-input-wrap {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
+.loc-input-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .loc-input {
   width: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
+  background: transparent; border: none; outline: none;
   color: var(--text);
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 0;
-  -webkit-appearance: none;
-  caret-color: var(--amber);
+  font-family: var(--mono); font-size: 14px; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0; -webkit-appearance: none; caret-color: var(--amber);
 }
-.loc-input::placeholder {
-  color: var(--amber);
-  font-size: 13px;
-  animation: loc-blink 2s ease infinite;
-}
-@keyframes loc-blink {
-  0%,100% { opacity: 1; }
-  50%     { opacity: 0.45; }
-}
-.loc-input:focus::placeholder { animation: none; opacity: 0.5; }
-
-.loc-count {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  min-height: 14px;
-}
-
+.loc-input::placeholder { color: var(--amber); font-size: 13px; animation: loc-blink 2s ease infinite; }
+@keyframes loc-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+.loc-input:focus::placeholder { animation: none; opacity: 0.4; }
+.loc-count { font-family: var(--mono); font-size: 10px; color: var(--text-dim); min-height: 14px; }
 .loc-rooms-btn {
   width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
-  background: none; border: none;
-  color: var(--text-dim);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  flex-shrink: 0;
-  transition: color 0.12s, background 0.12s;
+  background: none; border: none; color: var(--text-dim);
+  border-radius: 8px; cursor: pointer; font-size: 20px; flex-shrink: 0;
 }
 .loc-rooms-btn:active { background: var(--surface3); color: var(--amber); }
 
 /* Suggestions dropdown */
 #loc-suggestions {
   position: absolute;
-  top: 100%;
-  left: 0; right: 0;
+  top: 100%; left: 0; right: 0;
   background: var(--surface);
   border: 1px solid var(--border2);
   border-top: none;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  max-height: 230px;
+  max-height: 240px;
   overflow-y: auto;
   z-index: 50;
   -webkit-overflow-scrolling: touch;
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 #loc-suggestions.hidden { display: none; }
-
-.sug-group-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  color: var(--amber-dim);
-  text-transform: uppercase;
-  padding: 10px 14px 5px;
-}
-
+.sug-group-label { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.18em; color: var(--amber-dim); text-transform: uppercase; padding: 10px 14px 5px; }
 .sug-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 14px;
   cursor: pointer;
   border-bottom: 1px solid var(--border);
-  transition: background 0.08s;
   -webkit-user-select: none;
 }
 .sug-item:last-child { border-bottom: none; }
-.sug-item:active, .sug-item.highlighted { background: var(--surface2); }
+.sug-item:active { background: var(--surface2); }
+.sug-item-name { font-size: 16px; color: var(--text); font-family: var(--sans); }
+.sug-item-count { font-family: var(--mono); font-size: 11px; color: var(--amber-dim); }
 
-.sug-item-name {
-  font-size: 15px;
-  color: var(--text);
-  text-transform: none;
-  font-family: var(--sans);
-  font-weight: 400;
-}
-
-.sug-item-count {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--amber-dim);
-}
-
-/* Timeline */
+/* ═══════════════ TIMELINE ═══════════════ */
 #timeline {
-  flex: 1;
-  overflow-y: auto;
+  flex: 1; overflow-y: auto;
   padding: 10px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: flex; flex-direction: column; gap: 8px;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
-
 .tl-empty {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  gap: 10px;
-  text-align: center;
-  pointer-events: none;
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--text-dim); font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  gap: 10px; text-align: center; pointer-events: none;
 }
 .tl-empty-icon { font-size: 30px; opacity: 0.2; }
 
-/* Photo entry */
-.entry-photo {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
+.entry-photo { display: flex; gap: 10px; align-items: flex-start; }
 .photo-thumb {
-  width: 76px;
-  height: 76px;
-  border-radius: 7px;
-  object-fit: cover;
+  width: 80px; height: 80px;
+  border-radius: 7px; object-fit: cover;
   flex-shrink: 0;
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: opacity 0.1s;
   background: var(--surface2);
-  /* No loading="lazy" — inline base64 data URIs must load eagerly in Safari */
+  display: block;
 }
 .photo-thumb:active { opacity: 0.75; }
+.entry-meta { flex: 1; display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
+.entry-time { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+.entry-loc-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--amber-dim); text-transform: uppercase; }
 
-.entry-meta {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-top: 4px;
-}
-
-.entry-time {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-dim);
-}
-
-.entry-loc-tag {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--amber-dim);
-  text-transform: uppercase;
-}
-
-/* Note entry */
 .entry-note {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 11px 13px;
-  cursor: pointer;
-  transition: border-color 0.12s, background 0.12s;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 9px; padding: 11px 13px;
+  cursor: pointer; transition: border-color 0.12s, background 0.12s;
 }
 .entry-note:active { border-color: var(--amber); background: var(--surface2); }
 .entry-note.flagged { border-color: var(--red-border); background: var(--red-bg); }
-
-.note-text {
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--text);
-  margin-bottom: 7px;
-  word-break: break-word;
-}
-
-.note-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
+.note-text { font-size: 14px; line-height: 1.55; color: var(--text); margin-bottom: 7px; word-break: break-word; }
+.note-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .badge-s520 {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--red-bg);
-  color: var(--red);
-  border: 1px solid var(--red-border);
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  padding: 2px 7px;
-  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--red-bg); color: var(--red);
+  border: 1px solid var(--red-border); border-radius: 4px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.07em; padding: 2px 7px; flex-shrink: 0;
 }
 
-/* Action bar */
+/* ═══════════════ ACTION BAR ═══════════════ */
 .action-bar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
   padding: 12px 14px calc(var(--safe-bottom) + 12px);
-  background: var(--surface);
-  border-top: 1px solid var(--border);
+  background: var(--surface); border-top: 1px solid var(--border);
   flex-shrink: 0;
 }
-
 .action-btn {
-  height: 66px;
-  border: none;
-  border-radius: 11px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  transition: transform 0.1s, opacity 0.1s;
-  -webkit-user-select: none;
+  height: 66px; border: none; border-radius: 11px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px;
+  transition: transform 0.1s, opacity 0.1s; -webkit-user-select: none;
 }
 .action-btn:active { transform: scale(0.96); opacity: 0.82; }
-
-.btn-photo {
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border2);
-}
-.btn-note {
-  background: var(--amber);
-  color: #0c0f0d;
-}
-
-.btn-icon { font-size: 19px; }
-
-/* ═══════════════ CAMERA ═══════════════ */
-
-#overlay-camera {
-  position: fixed; inset: 0;
-  z-index: 100;
-  background: #000;
-  display: none;
-  flex-direction: column;
-}
-#overlay-camera.active { display: flex; }
-
-#viewfinder {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-
-.cam-overlay {
-  position: absolute; inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.cam-top {
-  padding: calc(var(--safe-top) + 14px) 16px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
-}
-
-.cam-loc {
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.9);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-  text-align: center;
-}
-
-.cam-spacer { flex: 1; }
-
-/* Bottom row: [CLOSE] [SHUTTER] [spacer] */
-.cam-bottom {
-  padding: 20px 32px calc(var(--safe-bottom) + 28px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-}
-
-/* Large close button — bottom left, thumb reach */
-.cam-close-btn {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.45);
-  border: 2px solid rgba(255,255,255,0.35);
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  flex-shrink: 0;
-  transition: background 0.1s;
-}
-.cam-close-btn:active { background: rgba(0,0,0,0.7); }
-
-.cam-shutter-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.capture-ring {
-  width: 78px; height: 78px;
-  border: 3px solid rgba(255,255,255,0.85);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.1s;
-}
-.capture-ring:active { transform: scale(0.93); }
-
-.capture-inner {
-  width: 62px; height: 62px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 50%;
-  transition: transform 0.1s;
-}
-.capture-ring:active .capture-inner { transform: scale(0.88); }
-
-/* Right spacer matches close button width for centering shutter */
-.cam-right-spacer { width: 64px; flex-shrink: 0; }
-
-.cam-flash {
-  position: absolute; inset: 0;
-  background: #fff;
-  opacity: 0;
-  z-index: 2;
-  pointer-events: none;
-  transition: opacity 0.05s;
-}
-.cam-flash.flash { opacity: 0.7; }
+.btn-photo { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.btn-note  { background: var(--amber); color: #0c0f0d; }
+.btn-icon  { font-size: 19px; }
 
 /* ═══════════════ NOTE MODAL ═══════════════ */
-
 #overlay-note {
-  position: fixed; inset: 0;
-  z-index: 200;
-  display: none;
-  align-items: flex-end;
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: flex-end;
 }
 #overlay-note.active { display: flex; }
-
 .note-backdrop {
   position: absolute; inset: 0;
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
-
 .note-sheet {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+  position: relative; z-index: 1; width: 100%;
   background: var(--surface);
   border-top: 1px solid var(--border2);
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
+  border-top-left-radius: 18px; border-top-right-radius: 18px;
   padding: 16px 16px calc(var(--safe-bottom) + 16px);
 }
-
-.note-handle {
-  width: 36px; height: 4px;
-  background: var(--border2);
-  border-radius: 2px;
-  margin: 0 auto 14px;
-}
-
-.note-hdr {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.note-title {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-  text-transform: uppercase;
-}
-
-.note-loc-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--amber);
-  text-transform: uppercase;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.textarea-wrap {
-  position: relative;
-  margin-bottom: 11px;
-}
-
+.note-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 14px; }
+.note-hdr { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+.note-title { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-dim); text-transform: uppercase; }
+.note-loc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--amber); text-transform: uppercase; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.textarea-wrap { position: relative; margin-bottom: 11px; }
 #note-textarea {
-  width: 100%;
-  min-height: 110px;
-  max-height: 220px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 9px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.55;
-  padding: 12px 48px 12px 14px;
-  resize: none;
-  outline: none;
-  transition: border-color 0.12s;
-  -webkit-appearance: none;
-  appearance: none;
+  width: 100%; min-height: 110px; max-height: 220px;
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 9px;
+  color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.55;
+  padding: 12px 48px 12px 14px; resize: none; outline: none;
+  transition: border-color 0.12s; -webkit-appearance: none; appearance: none;
 }
 #note-textarea:focus { border-color: var(--amber); }
 #note-textarea::placeholder { color: var(--text-dim); }
-
 .mic-btn {
-  position: absolute;
-  right: 8px; bottom: 8px;
+  position: absolute; right: 8px; bottom: 8px;
   width: 36px; height: 36px;
-  background: var(--surface3);
-  border: 1px solid var(--border2);
-  border-radius: 7px;
-  color: var(--text-dim);
-  font-size: 17px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
+  background: var(--surface3); border: 1px solid var(--border2); border-radius: 7px;
+  color: var(--text-dim); font-size: 17px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
 }
-.mic-btn.listening {
-  color: var(--red);
-  border-color: var(--red);
-  background: var(--red-bg);
-  animation: mic-ring 0.75s ease infinite;
-}
-@keyframes mic-ring {
-  0%,100% { box-shadow: 0 0 0 0 rgba(217,80,80,0.3); }
-  50%     { box-shadow: 0 0 0 5px rgba(217,80,80,0); }
-}
-
-.note-actions {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-}
-
+.mic-btn.listening { color: var(--red); border-color: var(--red); background: var(--red-bg); animation: mic-ring 0.75s ease infinite; }
+@keyframes mic-ring { 0%,100% { box-shadow: 0 0 0 0 rgba(217,80,80,0.3); } 50% { box-shadow: 0 0 0 5px rgba(217,80,80,0); } }
+.note-actions { display: flex; gap: 9px; align-items: center; }
 .s520-toggle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  height: 44px;
-  padding: 0 13px;
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.12s;
+  display: flex; align-items: center; gap: 5px;
+  height: 44px; padding: 0 13px;
+  background: none; border: 1px solid var(--border2); border-radius: 8px;
+  color: var(--text-dim); font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.08em; cursor: pointer; flex-shrink: 0; transition: all 0.12s;
 }
-.s520-toggle.on {
-  background: var(--red-bg);
-  border-color: var(--red-border);
-  color: var(--red);
-}
-
-.btn-cancel {
-  width: 44px; height: 44px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-dim);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
+.s520-toggle.on { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+.btn-cancel { width: 44px; height: 44px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .btn-cancel:active { background: var(--surface3); }
-
-.btn-save {
-  flex: 1;
-  height: 44px;
-  background: var(--amber);
-  color: #0c0f0d;
-  border: none;
-  border-radius: 8px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: opacity 0.1s;
-}
+.btn-save { flex: 1; height: 44px; background: var(--amber); color: #0c0f0d; border: none; border-radius: 8px; font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer; transition: opacity 0.1s; }
 .btn-save:active { opacity: 0.8; }
 
 /* ═══════════════ ROOMS PANEL ═══════════════ */
-
 #overlay-rooms {
-  position: fixed; inset: 0;
-  z-index: 300;
-  background: var(--bg);
-  display: none;
-  flex-direction: column;
+  position: fixed; inset: 0; z-index: 300;
+  background: var(--bg); display: none; flex-direction: column;
 }
 #overlay-rooms.active { display: flex; }
-
 .rooms-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; align-items: center; gap: 10px;
   padding: calc(var(--safe-top) + 12px) 16px 12px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+  background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0;
 }
-
-.rooms-title {
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--text);
-  flex: 1;
-  text-transform: uppercase;
-}
-
-.rooms-subtitle {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  letter-spacing: 0.08em;
-}
-
+.rooms-title { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; color: var(--text); flex: 1; text-transform: uppercase; }
+.rooms-count { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; }
 #rooms-list {
-  flex: 1;
-  overflow-y: auto;
+  flex: 1; overflow-y: auto;
   padding: 10px 14px calc(var(--safe-bottom) + 14px);
   -webkit-overflow-scrolling: touch;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: flex; flex-direction: column; gap: 8px;
 }
-
 .room-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  cursor: pointer;
-  transition: border-color 0.1s;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 12px; cursor: pointer; min-height: 68px;
   -webkit-user-select: none;
-  min-height: 68px;
 }
 .room-card:active { border-color: var(--amber); background: var(--surface2); }
 .room-card.current-room { border-color: var(--amber); background: var(--amber-glow); }
-
 .room-thumb {
   width: 48px; height: 48px;
-  border-radius: 7px;
-  object-fit: cover;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  flex-shrink: 0;
+  border-radius: 7px; object-fit: cover;
+  background: var(--surface2); border: 1px solid var(--border);
+  flex-shrink: 0; display: block;
 }
 .room-thumb-placeholder {
-  width: 48px; height: 48px;
-  border-radius: 7px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-dim);
-  font-size: 18px;
-  opacity: 0.4;
+  width: 48px; height: 48px; border-radius: 7px;
+  background: var(--surface2); border: 1px solid var(--border);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim); font-size: 18px; opacity: 0.4;
 }
-
-.room-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.room-name {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.room-meta {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-dim);
-}
-
-.room-arrow {
-  color: var(--text-dim);
-  font-size: 12px;
-  flex-shrink: 0;
-}
-
-.rooms-empty {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  gap: 10px;
-  text-align: center;
-}
+.room-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.room-name { font-size: 15px; font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.room-meta { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+.room-arrow { color: var(--text-dim); font-size: 12px; flex-shrink: 0; }
+.rooms-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; gap: 10px; text-align: center; }
 
 /* ═══════════════ SETTINGS ═══════════════ */
-
-#overlay-settings {
-  position: fixed; inset: 0;
-  z-index: 400;
-  background: var(--bg);
-  display: none;
-  flex-direction: column;
-}
+#overlay-settings { position: fixed; inset: 0; z-index: 400; background: var(--bg); display: none; flex-direction: column; }
 #overlay-settings.active { display: flex; }
-
-.settings-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 16px;
-  -webkit-overflow-scrolling: touch;
-}
-
+.settings-body { flex: 1; overflow-y: auto; padding: 20px 16px; -webkit-overflow-scrolling: touch; }
 .settings-section { margin-bottom: 28px; }
-
-.settings-section-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  color: var(--amber-dim);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  padding: 0 2px;
-}
-
-.settings-row {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 15px;
-  margin-bottom: 8px;
-}
-
-.settings-row-title {
-  font-size: 15px;
-  color: var(--text);
-  font-weight: 500;
-  margin-bottom: 3px;
-}
-
-.settings-row-sub {
-  font-size: 12px;
-  color: var(--text-dim);
-  line-height: 1.5;
-}
-
-.settings-input {
-  width: 100%;
-  height: 42px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 7px;
-  color: var(--text);
-  font-size: 16px;
-  padding: 0 12px;
-  margin-top: 9px;
-  outline: none;
-  transition: border-color 0.12s;
-  -webkit-appearance: none;
-}
+.settings-section-label { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.18em; color: var(--amber-dim); text-transform: uppercase; margin-bottom: 10px; padding: 0 2px; }
+.settings-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 15px; margin-bottom: 8px; }
+.settings-row-title { font-size: 15px; color: var(--text); font-weight: 500; margin-bottom: 3px; }
+.settings-row-sub { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.settings-input { width: 100%; height: 42px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 7px; color: var(--text); font-size: 16px; padding: 0 12px; margin-top: 9px; outline: none; transition: border-color 0.12s; -webkit-appearance: none; }
 .settings-input:focus { border-color: var(--amber); }
-.settings-input::placeholder { color: var(--text-dim); }
-
-.btn-learn {
-  margin-top: 9px;
-  height: 40px;
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 7px;
-  color: var(--amber);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: background 0.12s;
-}
+.btn-learn { margin-top: 9px; height: 40px; width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 7px; color: var(--amber); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; cursor: pointer; transition: background 0.12s; }
 .btn-learn:active { background: var(--surface3); }
-
-.btn-ghost {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  height: 50px;
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 9px;
-  color: var(--text-mid);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  margin-bottom: 8px;
-  transition: border-color 0.12s, color 0.12s;
-}
+.btn-ghost { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 50px; background: none; border: 1px solid var(--border2); border-radius: 9px; color: var(--text-mid); font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; cursor: pointer; margin-bottom: 8px; transition: border-color 0.12s, color 0.12s; }
 .btn-ghost:active { border-color: var(--amber); color: var(--amber); }
-
 .btn-ghost.danger { color: var(--red); border-color: var(--red-border); }
 .btn-ghost.danger:active { background: var(--red-bg); }
 
 /* ═══════════════ LIGHTBOX ═══════════════ */
-
-#overlay-lightbox {
-  position: fixed; inset: 0;
-  z-index: 500;
-  background: rgba(0,0,0,0.96);
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
+#overlay-lightbox { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.96); display: none; align-items: center; justify-content: center; }
 #overlay-lightbox.active { display: flex; }
-
-#lightbox-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.lb-close {
-  position: absolute;
-  top: calc(var(--safe-top) + 14px);
-  right: 16px;
-  width: 40px; height: 40px;
-  background: rgba(255,255,255,0.12);
-  border: none;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
+#lightbox-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.lb-close { position: absolute; top: calc(var(--safe-top) + 14px); right: 16px; width: 40px; height: 40px; background: rgba(255,255,255,0.12); border: none; border-radius: 50%; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
 /* ═══════════════ TOAST ═══════════════ */
-
-#toast {
-  position: fixed;
-  bottom: calc(var(--safe-bottom) + 90px);
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
-  background: var(--surface3);
-  border: 1px solid var(--border2);
-  border-radius: 20px;
-  padding: 8px 18px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--text);
-  opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
-  pointer-events: none;
-  z-index: 999;
-  white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-}
-#toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
+#toast { position: fixed; bottom: calc(var(--safe-bottom) + 90px); left: 50%; transform: translateX(-50%) translateY(8px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 20px; padding: 8px 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text); opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 999; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
@@ -1170,15 +444,15 @@ html, body {
 </head>
 <body>
 
+<!-- Hidden native camera input — routes to iOS Camera app with full quality -->
+<input type="file" id="native-camera-input" accept="image/*" capture="environment" style="position:absolute;opacity:0;pointer-events:none;top:0;left:0;width:1px;height:1px;">
+
 <!-- ══════════════ SCREEN: JOB LIST ══════════════ -->
 <div id="screen-jobs" class="screen">
   <div class="wordmark">AURA FIELD</div>
   <div class="screen-subtitle">IEQ Inspection Capture</div>
   <div class="job-list" id="job-list">
-    <div class="empty-state">
-      <div class="e-icon">◎</div>
-      <div>No inspections yet</div>
-    </div>
+    <div class="empty-state"><div class="e-icon">◎</div><div>No inspections yet</div></div>
   </div>
   <button class="btn-primary" onclick="showNewJob()">+ New Inspection</button>
 </div>
@@ -1207,7 +481,7 @@ html, body {
       <input class="form-input" id="f-inspector" type="text" autocapitalize="words" placeholder="Eva M King">
       <div class="form-hint">Saved for future inspections</div>
     </div>
-    <button class="btn-primary" onclick="createJob()" style="margin-top: 8px">Start Inspection →</button>
+    <button class="btn-primary" onclick="createJob()" style="margin-top:8px">Start Inspection →</button>
   </div>
 </div>
 
@@ -1215,7 +489,7 @@ html, body {
 <div id="screen-main" class="screen">
   <div class="topbar">
     <div class="topbar-job">
-      <div class="topbar-id" id="topbar-id">R031326A</div>
+      <div class="topbar-id" id="topbar-id">—</div>
       <div class="topbar-client" id="topbar-client">—</div>
     </div>
     <div class="topbar-right">
@@ -1224,7 +498,6 @@ html, body {
     </div>
   </div>
 
-  <!-- Location typeahead bar -->
   <div class="location-bar" id="location-bar">
     <div class="loc-dot"></div>
     <div class="loc-input-wrap">
@@ -1238,7 +511,6 @@ html, body {
       <div class="loc-count" id="loc-count"></div>
     </div>
     <button class="loc-rooms-btn" onclick="openRoomsPanel()" title="All rooms">⊞</button>
-    <!-- Suggestions dropdown — inside location-bar for absolute positioning -->
     <div id="loc-suggestions" class="hidden"></div>
   </div>
 
@@ -1250,35 +522,12 @@ html, body {
   </div>
 
   <div class="action-bar">
-    <button class="action-btn btn-photo" onclick="openCamera()">
+    <button class="action-btn btn-photo" id="btn-photo" onclick="openCamera()">
       <span class="btn-icon">◉</span>PHOTO
     </button>
     <button class="action-btn btn-note" onclick="openNote()">
       <span class="btn-icon">✎</span>NOTE
     </button>
-  </div>
-</div>
-
-<!-- ══════════════ OVERLAY: CAMERA ══════════════ -->
-<div id="overlay-camera">
-  <video id="viewfinder" autoplay playsinline muted></video>
-  <div class="cam-flash" id="cam-flash"></div>
-  <div class="cam-overlay">
-    <!-- Location label at top, no close button here -->
-    <div class="cam-top">
-      <div class="cam-loc" id="cam-loc-label">—</div>
-    </div>
-    <div class="cam-spacer"></div>
-    <!-- Controls at bottom: close button (left) + shutter (center) + spacer (right) -->
-    <div class="cam-bottom">
-      <button class="cam-close-btn" onclick="closeCamera()">✕</button>
-      <div class="cam-shutter-wrap">
-        <button class="capture-ring" id="btn-capture" onclick="capturePhoto()">
-          <div class="capture-inner"></div>
-        </button>
-      </div>
-      <div class="cam-right-spacer"></div>
-    </div>
   </div>
 </div>
 
@@ -1303,14 +552,12 @@ html, body {
   </div>
 </div>
 
-<!-- ══════════════ OVERLAY: ROOMS PANEL ══════════════ -->
+<!-- ══════════════ OVERLAY: ROOMS ══════════════ -->
 <div id="overlay-rooms">
   <div class="rooms-header">
     <button class="back-btn" onclick="closeRoomsPanel()">✕</button>
-    <div>
-      <div class="rooms-title">Rooms</div>
-      <div class="rooms-subtitle" id="rooms-subtitle">All visited locations</div>
-    </div>
+    <div class="rooms-title">Rooms</div>
+    <div class="rooms-count" id="rooms-count"></div>
   </div>
   <div id="rooms-list"></div>
 </div>
@@ -1322,7 +569,6 @@ html, body {
     <div class="screen-header-title">Settings</div>
   </div>
   <div class="settings-body">
-
     <div class="settings-section">
       <div class="settings-section-label">Default Inspector</div>
       <div class="settings-row">
@@ -1330,7 +576,6 @@ html, body {
         <input class="settings-input" id="s-inspector" type="text" autocapitalize="words" placeholder="Eva M King" onchange="localStorage.setItem('inspector', this.value)">
       </div>
     </div>
-
     <div class="settings-section">
       <div class="settings-section-label">Bluetooth Shutter</div>
       <div class="settings-row">
@@ -1339,21 +584,25 @@ html, body {
         <button class="btn-learn" id="btn-learn" onclick="learnKey()">Press to learn key from shutter remote</button>
       </div>
     </div>
-
+    <div class="settings-section">
+      <div class="settings-section-label">Camera Mode</div>
+      <div class="settings-row">
+        <div class="settings-row-title">Native iOS Camera</div>
+        <div class="settings-row-sub">PHOTO button opens the iOS Camera app — full quality, tap-to-focus, Night mode, zoom. After capturing, tap Use Photo to import. Bluetooth shutter fires in the native camera app via the volume button.</div>
+      </div>
+    </div>
     <div class="settings-section">
       <div class="settings-section-label">This Inspection</div>
       <button class="btn-ghost" onclick="exportJSON(); closeSettings()">⇧ Export JSON</button>
       <button class="btn-ghost danger" onclick="confirmCloseJob()">← Close Inspection</button>
     </div>
-
     <div class="settings-section">
       <div class="settings-section-label">Add to Home Screen (iOS)</div>
       <div class="settings-row">
         <div class="settings-row-title">Offline Setup</div>
-        <div class="settings-row-sub">Open in Safari → tap the Share button (□↑) → tap "Add to Home Screen" → tap Add. The app will work offline after the first load.</div>
+        <div class="settings-row-sub">Open in Safari → Share (□↑) → Add to Home Screen → Add. App works offline after first load.</div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -1363,29 +612,27 @@ html, body {
   <button class="lb-close">✕</button>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
 // ════════════════════════════════════════════════════════
-// LOCATION DATA
+// LOCATION DATA — simplified list
 // ════════════════════════════════════════════════════════
 
-const LOCATION_GROUPS = [
-  { g: 'Exterior', locs: ['Front Exterior','Rear Exterior','Left Side Exterior','Right Side Exterior','Roof','Deck / Patio','Driveway / Hardscape','Foundation Exterior','Garage Exterior'] },
-  { g: 'Garage', locs: ['Garage Interior','Garage Ceiling','Garage Attic Space'] },
-  { g: 'Crawlspace', locs: ['Crawlspace — Entry','Crawlspace — General','Crawlspace — Far End','Crawlspace — Perimeter','Crawlspace — Under Addition'] },
-  { g: 'Basement', locs: ['Basement — Utility / Mechanical Room','Basement — Laundry','Basement — Bathroom','Basement — Bedroom','Basement — Finished Living Area','Basement — Storage Area','Basement — Stairwell','Basement — Sump Area','Basement — Bar / Kitchenette'] },
-  { g: 'Ground Floor', locs: ['Entry / Foyer','Living Room','Family Room','Dining Room','Kitchen','Powder Room','Laundry Room','Office / Study','Hallway','Mudroom','Pantry','Sunroom','Under Stairs'] },
-  { g: 'Second Floor', locs: ['Master Bedroom','Master Bathroom','Bedroom 2','Bedroom 3','Bedroom 4','Bathroom (2nd Floor)','Hallway (2nd Floor)','Laundry Room (2nd Floor)','Walk-in Closet','Linen Closet'] },
-  { g: 'Third Floor', locs: ['Bedroom (3rd Floor)','Bathroom (3rd Floor)','Bonus Room','Hallway (3rd Floor)'] },
-  { g: 'Attic', locs: ['Attic — Main Access','Attic — General','Attic — Knee Wall','Attic — Over Garage','Attic — Low-Slope Section'] },
-  { g: 'HVAC / Mechanical', locs: ['Air Handling Unit','Furnace / Boiler','Ductwork — Supply','Ductwork — Return','ERV / HRV Unit','Water Heater','Radon Mitigation System','Whole-House Dehumidifier'] },
-  { g: 'Extended', locs: ['Library','Home Theater','Wine Cellar','Guest Suite','Guest Bathroom','In-Law Suite','Exercise Room','Game Room','Pool Equipment Room','Workshop','Sauna / Steam Room','Safe Room'] }
+const STANDARD_LOCS = [
+  'Living Room',
+  'Kitchen',
+  'Dining Room',
+  'Powder Room',
+  'Laundry Room',
+  'Bedroom',
+  'Bathroom',
+  'Basement',
+  'Crawlspace',
+  'Utility Room',
+  'HVAC',
+  'Attic'
 ];
-
-// Flat list for typeahead
-const ALL_STANDARD_LOCS = LOCATION_GROUPS.flatMap(g => g.locs);
 
 const S520_WORDS = ['mold','fungal','fungus','mould','moldy','mouldy','growth','chaetomium','aspergillus','penicillium','stachybotrys','rot','rotted','rotten','remediat','condition 3','cat 3','category 3','iicrc','contamina','cladosporium'];
 
@@ -1393,17 +640,16 @@ const S520_WORDS = ['mold','fungal','fungus','mould','moldy','mouldy','growth','
 // STATE
 // ════════════════════════════════════════════════════════
 
-let db = null;
-let job = null;
-let locName = null;
-let locCounts = {};       // locationName → entry count
-let locOrder = [];        // locationNames in first-appearance order
-let editId = null;
-let s520On = false;
-let cameraStream = null;
+let db        = null;
+let job       = null;
+let locName   = null;       // current location string
+let locCounts = {};         // name → count
+let locOrder  = [];         // first-appearance order
+let editId    = null;
+let s520On    = false;
 let recognizer = null;
-let micActive = false;
-let btKey = ' ';
+let micActive  = false;
+let btKey      = ' ';
 let learningKey = false;
 let locBlurTimer = null;
 
@@ -1424,7 +670,7 @@ function openDB() {
       }
     };
     r.onsuccess = e => res(e.target.result);
-    r.onerror = e => rej(e.target.error);
+    r.onerror   = e => rej(e.target.error);
   });
 }
 
@@ -1434,22 +680,21 @@ function tx(store, mode, fn) {
     const s = t.objectStore(store);
     const r = fn(s);
     r.onsuccess = () => res(r.result);
-    r.onerror = () => rej(r.error);
+    r.onerror   = () => rej(r.error);
   });
 }
 
-const put  = (store, obj) => tx(store, 'readwrite', s => s.put(obj));
-const get  = (store, key) => tx(store, 'readonly',  s => s.get(key));
-const del  = (store, key) => tx(store, 'readwrite', s => s.delete(key));
-const all  = (store)      => tx(store, 'readonly',  s => s.getAll());
+const put = (store, obj) => tx(store, 'readwrite', s => s.put(obj));
+const get = (store, key) => tx(store, 'readonly',  s => s.get(key));
+const all = (store)      => tx(store, 'readonly',  s => s.getAll());
 
 function jobEntries(jobId) {
   return new Promise((res, rej) => {
-    const t = db.transaction('entries', 'readonly');
+    const t   = db.transaction('entries', 'readonly');
     const idx = t.objectStore('entries').index('jobId');
-    const r = idx.getAll(jobId);
+    const r   = idx.getAll(jobId);
     r.onsuccess = () => res(r.result);
-    r.onerror = () => rej(r.error);
+    r.onerror   = () => rej(r.error);
   });
 }
 
@@ -1457,16 +702,14 @@ function jobEntries(jobId) {
 // HELPERS
 // ════════════════════════════════════════════════════════
 
-function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
 function autoJobId() {
-  const n = new Date();
+  const n  = new Date();
   const mm = String(n.getMonth()+1).padStart(2,'0');
   const dd = String(n.getDate()).padStart(2,'0');
   const yy = String(n.getFullYear()).slice(2);
@@ -1478,14 +721,14 @@ function s520check(text) {
   return S520_WORDS.some(w => low.includes(w));
 }
 
-function esc(s) {
+function escHtml(s) {
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/\n/g,'<br>');
 }
 
 let toastTimer;
-function toast(msg, ms = 2000) {
+function toast(msg, ms = 2200) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.classList.add('show');
@@ -1494,7 +737,7 @@ function toast(msg, ms = 2000) {
 }
 
 // ════════════════════════════════════════════════════════
-// SCREEN MANAGEMENT
+// SCREEN / OVERLAY MANAGEMENT
 // ════════════════════════════════════════════════════════
 
 function showScreen(id) {
@@ -1517,7 +760,7 @@ function hideOverlay(id) { document.getElementById(id).classList.remove('active'
 async function loadJobs() {
   showScreen('screen-jobs');
   const jobs = await all('jobs');
-  const el = document.getElementById('job-list');
+  const el   = document.getElementById('job-list');
 
   if (!jobs.length) {
     el.innerHTML = '<div class="empty-state"><div class="e-icon">◎</div><div>No inspections yet</div></div>';
@@ -1530,27 +773,24 @@ async function loadJobs() {
       <div class="job-card-id">${j.id}</div>
       <div class="job-card-client">${j.client || '—'}</div>
       <div class="job-card-meta">${[j.address, new Date(j.createdAt).toLocaleDateString()].filter(Boolean).join(' · ')}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function showNewJob() {
   showScreen('screen-new-job');
-  document.getElementById('f-job-id').value = autoJobId();
+  document.getElementById('f-job-id').value   = autoJobId();
   document.getElementById('f-inspector').value = localStorage.getItem('inspector') || '';
-  document.getElementById('f-client').value = '';
-  document.getElementById('f-address').value = '';
+  document.getElementById('f-client').value   = '';
+  document.getElementById('f-address').value  = '';
 }
 
 async function createJob() {
-  const id = document.getElementById('f-job-id').value.trim();
-  const client = document.getElementById('f-client').value.trim();
-  const address = document.getElementById('f-address').value.trim();
+  const id        = document.getElementById('f-job-id').value.trim();
+  const client    = document.getElementById('f-client').value.trim();
+  const address   = document.getElementById('f-address').value.trim();
   const inspector = document.getElementById('f-inspector').value.trim();
-
-  if (!id) { toast('Job ID is required'); return; }
+  if (!id) { toast('Job ID required'); return; }
   if (inspector) localStorage.setItem('inspector', inspector);
-
   const j = { id, client, address, inspector, createdAt: Date.now() };
   await put('jobs', j);
   await startJob(j);
@@ -1562,9 +802,9 @@ async function resumeJob(id) {
 }
 
 async function startJob(j) {
-  job = j;
+  job     = j;
   locName = null;
-  document.getElementById('topbar-id').textContent = j.id;
+  document.getElementById('topbar-id').textContent     = j.id;
   document.getElementById('topbar-client').textContent = j.client || j.id;
   await refreshCounts();
   showScreen('screen-main');
@@ -1573,44 +813,43 @@ async function startJob(j) {
 }
 
 // ════════════════════════════════════════════════════════
-// LOCATION BAR — TYPEAHEAD
+// LOCATION COUNTS
 // ════════════════════════════════════════════════════════
 
 async function refreshCounts() {
   if (!job) return;
   const entries = await jobEntries(job.id);
   locCounts = {};
-  locOrder = [];
-  // sort by ts to determine first-appearance order
+  locOrder  = [];
   entries.sort((a,b) => a.ts - b.ts).forEach(e => {
-    if (e.locName) {
-      locCounts[e.locName] = (locCounts[e.locName] || 0) + 1;
-      if (!locOrder.includes(e.locName)) locOrder.push(e.locName);
-    }
+    if (!e.locName) return;
+    locCounts[e.locName] = (locCounts[e.locName] || 0) + 1;
+    if (!locOrder.includes(e.locName)) locOrder.push(e.locName);
   });
 }
 
 function updateLocBar() {
   const input = document.getElementById('loc-input');
   const cntEl = document.getElementById('loc-count');
-  const camEl = document.getElementById('cam-loc-label');
 
   if (!locName) {
-    input.value = '';
-    input.placeholder = 'TAP TO SET LOCATION';
+    input.value      = '';
     cntEl.textContent = '';
-    camEl.textContent = '—';
   } else {
     input.value = locName;
     const n = locCounts[locName] || 0;
-    cntEl.textContent = n ? `${n} capture${n > 1 ? 's' : ''}` : '';
-    camEl.textContent = locName;
+    cntEl.textContent = n ? `${n} capture${n !== 1 ? 's' : ''}` : '';
   }
 }
 
+// ════════════════════════════════════════════════════════
+// LOCATION TYPEAHEAD
+// ════════════════════════════════════════════════════════
+
 function onLocFocus() {
-  // Show suggestions immediately on focus
+  // Select all so user can immediately type a new location
   const input = document.getElementById('loc-input');
+  input.select();
   buildSuggestions(input.value);
   document.getElementById('loc-suggestions').classList.remove('hidden');
 }
@@ -1621,17 +860,18 @@ function onLocInput(val) {
 }
 
 function buildSuggestions(query) {
-  const q = query.trim().toLowerCase();
-  const sugEl = document.getElementById('loc-suggestions');
+  const q      = query.trim().toLowerCase();
+  const sugEl  = document.getElementById('loc-suggestions');
+  const visited = new Set(locOrder.map(n => n.toLowerCase()));
   let html = '';
 
-  // Section 1: rooms already in this job
-  const visitedFiltered = locOrder.filter(n => !q || n.toLowerCase().includes(q));
-  if (visitedFiltered.length) {
+  // Already-visited rooms for this job
+  const visitedMatches = locOrder.filter(n => !q || n.toLowerCase().includes(q));
+  if (visitedMatches.length) {
     html += `<div class="sug-group-label">This Inspection</div>`;
-    visitedFiltered.forEach(name => {
-      const cnt = locCounts[name] || 0;
-      const safe = name.replace(/'/g, "\\'");
+    visitedMatches.forEach(name => {
+      const cnt  = locCounts[name] || 0;
+      const safe = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       html += `<div class="sug-item" onmousedown="pickSuggestion('${safe}')">
         <span class="sug-item-name">${name}</span>
         <span class="sug-item-count">${cnt} capture${cnt !== 1 ? 's' : ''}</span>
@@ -1639,16 +879,12 @@ function buildSuggestions(query) {
     });
   }
 
-  // Section 2: standard locations not already in this job
-  const alreadyVisited = new Set(locOrder.map(n => n.toLowerCase()));
-  const standardFiltered = ALL_STANDARD_LOCS.filter(n =>
-    !alreadyVisited.has(n.toLowerCase()) && (!q || n.toLowerCase().includes(q))
-  );
-  if (standardFiltered.length) {
-    const label = visitedFiltered.length ? 'Standard' : (q ? 'Matching' : 'Standard Locations');
-    html += `<div class="sug-group-label">${label}</div>`;
-    standardFiltered.slice(0, 30).forEach(name => {
-      const safe = name.replace(/'/g, "\\'");
+  // Standard locations not yet visited
+  const stdMatches = STANDARD_LOCS.filter(n => !visited.has(n.toLowerCase()) && (!q || n.toLowerCase().includes(q)));
+  if (stdMatches.length) {
+    html += `<div class="sug-group-label">${visitedMatches.length ? 'Standard' : 'Rooms'}</div>`;
+    stdMatches.forEach(name => {
+      const safe = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       html += `<div class="sug-item" onmousedown="pickSuggestion('${safe}')">
         <span class="sug-item-name">${name}</span>
         <span class="sug-item-count"></span>
@@ -1656,51 +892,52 @@ function buildSuggestions(query) {
     });
   }
 
-  // If they've typed something not in the list at all, offer to use it directly
-  if (q && !ALL_STANDARD_LOCS.some(n => n.toLowerCase() === q) && !locOrder.some(n => n.toLowerCase() === q)) {
-    const display = query.trim();
-    const safe = display.replace(/'/g, "\\'");
+  // Custom entry — offer to use as-typed if doesn't match anything
+  const trimmed = query.trim();
+  const exactMatch = locOrder.some(n => n.toLowerCase() === trimmed.toLowerCase()) ||
+                     STANDARD_LOCS.some(n => n.toLowerCase() === trimmed.toLowerCase());
+  if (trimmed && !exactMatch) {
+    const safe = trimmed.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html = `<div class="sug-group-label">Use As-Is</div>
       <div class="sug-item" onmousedown="pickSuggestion('${safe}')">
-        <span class="sug-item-name">➜ ${display}</span>
+        <span class="sug-item-name">➜ ${trimmed}</span>
         <span class="sug-item-count">New</span>
       </div>` + html;
   }
 
-  sugEl.innerHTML = html || '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;font-family:var(--mono)">No matches</div>';
+  if (!html) {
+    html = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;font-family:var(--mono)">No matches</div>';
+  }
+
+  sugEl.innerHTML = html;
 }
 
 function pickSuggestion(name) {
   clearTimeout(locBlurTimer);
   setLocation(name);
+  document.getElementById('loc-input').blur();
 }
 
 function onLocBlur() {
-  // Delay hide so tap-on-suggestion fires first (onmousedown)
   locBlurTimer = setTimeout(() => {
     hideSuggestions();
-    // If they typed something and blurred without picking, commit what's typed
     const val = document.getElementById('loc-input').value.trim();
-    if (val && val !== locName) {
+    if (val && val.toLowerCase() !== (locName || '').toLowerCase()) {
       setLocation(val);
     } else if (!val && locName) {
-      // Restore previous value if they cleared and blurred
+      // Restore if cleared without committing
       document.getElementById('loc-input').value = locName;
     }
-  }, 200);
+  }, 250);
 }
 
 function onLocKey(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
     const val = document.getElementById('loc-input').value.trim();
-    if (val) {
-      setLocation(val);
-      document.getElementById('loc-input').blur();
-    }
+    if (val) { setLocation(val); document.getElementById('loc-input').blur(); }
   } else if (e.key === 'Escape') {
     document.getElementById('loc-input').blur();
-    hideSuggestions();
   }
 }
 
@@ -1713,14 +950,11 @@ function setLocation(name) {
   hideSuggestions();
   updateLocBar();
   renderTimeline();
-  // Save to visited order if new
-  if (!locOrder.includes(locName)) {
-    locOrder.push(locName);
-  }
+  if (!locOrder.includes(locName)) locOrder.push(locName);
 }
 
 // ════════════════════════════════════════════════════════
-// TIMELINE
+// TIMELINE  — images created programmatically (fixes iOS Safari display bug)
 // ════════════════════════════════════════════════════════
 
 async function renderTimeline() {
@@ -1729,19 +963,19 @@ async function renderTimeline() {
 
   if (!locName) {
     container.innerHTML = '';
-    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>Set a location to begin</div>';
+    emptyEl.innerHTML   = '<div class="tl-empty-icon">◎</div><div>Set a location to begin</div>';
     container.appendChild(emptyEl);
     return;
   }
 
-  const all_entries = await jobEntries(job.id);
-  const entries = all_entries
+  const allEntries = await jobEntries(job.id);
+  const entries    = allEntries
     .filter(e => e.locName === locName)
-    .sort((a,b) => b.ts - a.ts); // newest first
+    .sort((a,b) => b.ts - a.ts);
 
   if (!entries.length) {
     container.innerHTML = '';
-    emptyEl.innerHTML = '<div class="tl-empty-icon">◎</div><div>No captures yet</div><div style="font-size:10px;margin-top:6px">Use PHOTO or NOTE below</div>';
+    emptyEl.innerHTML   = '<div class="tl-empty-icon">◎</div><div>No captures yet</div><div style="font-size:10px;margin-top:6px">Use PHOTO or NOTE below</div>';
     container.appendChild(emptyEl);
     return;
   }
@@ -1753,23 +987,31 @@ async function renderTimeline() {
 
     if (entry.type === 'photo') {
       el.className = 'entry-photo';
-      // Note: NO loading="lazy" — base64 data URIs don't lazy-load reliably in iOS Safari
-      el.innerHTML = `
-        <img class="photo-thumb" src="${entry.thumb}" alt="" onclick="openLightbox('${entry.id}')">
-        <div class="entry-meta">
-          <div class="entry-time">${fmtTime(entry.ts)}</div>
-          <div class="entry-loc-tag">${esc(entry.locName)}</div>
-        </div>`;
+
+      // Create img element programmatically — avoids iOS Safari innerHTML/base64 rendering bug
+      const img = document.createElement('img');
+      img.className = 'photo-thumb';
+      img.alt       = '';
+      img.src       = entry.thumb || entry.img; // use full-res as fallback
+      img.addEventListener('click', () => openLightbox(entry.id));
+
+      const meta = document.createElement('div');
+      meta.className = 'entry-meta';
+      meta.innerHTML = `<div class="entry-time">${fmtTime(entry.ts)}</div>
+                        <div class="entry-loc-tag">${escHtml(entry.locName)}</div>`;
+
+      el.appendChild(img);
+      el.appendChild(meta);
+
     } else {
       const s520Badge = entry.s520 ? '<span class="badge-s520">⬤ S520</span>' : '';
-      el.className = 'entry-note' + (entry.s520 ? ' flagged' : '');
-      el.innerHTML = `
-        <div class="note-text">${esc(entry.text)}</div>
-        <div class="note-footer">
-          <div class="entry-time">${fmtTime(entry.ts)}</div>
-          ${s520Badge}
-        </div>`;
-      el.onclick = () => openEditNote(entry.id);
+      el.className    = 'entry-note' + (entry.s520 ? ' flagged' : '');
+      el.innerHTML    = `<div class="note-text">${escHtml(entry.text)}</div>
+                         <div class="note-footer">
+                           <div class="entry-time">${fmtTime(entry.ts)}</div>
+                           ${s520Badge}
+                         </div>`;
+      el.addEventListener('click', () => openEditNote(entry.id));
     }
 
     container.appendChild(el);
@@ -1777,63 +1019,64 @@ async function renderTimeline() {
 }
 
 // ════════════════════════════════════════════════════════
-// CAMERA
+// CAMERA — native iOS camera via file input
 // ════════════════════════════════════════════════════════
 
-async function openCamera() {
-  if (!locName) {
-    document.getElementById('loc-input').focus();
-    return;
-  }
+// Set up file input listener once
+document.getElementById('native-camera-input').addEventListener('change', async e => {
+  const file = e.target.files && e.target.files[0];
+  if (!file || !locName) return;
 
-  try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
-      audio: false
-    });
-    document.getElementById('viewfinder').srcObject = cameraStream;
-    showOverlay('overlay-camera');
-  } catch(err) {
-    toast('Camera: ' + (err.message || err.name));
-  }
-}
+  // Reset so same photo can be re-selected if needed
+  e.target.value = '';
 
-function closeCamera() {
-  if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
-  document.getElementById('viewfinder').srcObject = null;
-  hideOverlay('overlay-camera');
-}
+  toast('Processing…');
 
-async function capturePhoto() {
-  const vid = document.getElementById('viewfinder');
-  if (!vid.videoWidth) return;
+  const imgDataUrl = await new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = ev => res(ev.target.result);
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
 
-  // Flash
-  const flash = document.getElementById('cam-flash');
-  flash.classList.add('flash');
-  setTimeout(() => flash.classList.remove('flash'), 100);
+  // Build thumbnail via canvas
+  const thumb = await new Promise(res => {
+    const image = new Image();
+    image.onload = () => {
+      const size   = 240;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx    = canvas.getContext('2d');
+      // Center-crop square
+      const short  = Math.min(image.width, image.height);
+      const sx     = (image.width  - short) / 2;
+      const sy     = (image.height - short) / 2;
+      ctx.drawImage(image, sx, sy, short, short, 0, 0, size, size);
+      res(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    image.src = imgDataUrl;
+  });
 
-  // Full-res canvas
-  const c = document.createElement('canvas');
-  c.width = vid.videoWidth; c.height = vid.videoHeight;
-  c.getContext('2d').drawImage(vid, 0, 0);
-  const img = c.toDataURL('image/jpeg', 0.85);
+  const entry = {
+    id: uid(), jobId: job.id, locName,
+    type: 'photo', ts: Date.now(),
+    img: imgDataUrl, thumb
+  };
 
-  // Thumbnail (square crop from center for compact display)
-  const t = document.createElement('canvas');
-  const shortSide = Math.min(vid.videoWidth, vid.videoHeight);
-  t.width = 240; t.height = 240;
-  const sx = (vid.videoWidth - shortSide) / 2;
-  const sy = (vid.videoHeight - shortSide) / 2;
-  t.getContext('2d').drawImage(vid, sx, sy, shortSide, shortSide, 0, 0, 240, 240);
-  const thumb = t.toDataURL('image/jpeg', 0.72);
-
-  const entry = { id: uid(), jobId: job.id, locName, type: 'photo', ts: Date.now(), img, thumb };
   await put('entries', entry);
   await refreshCounts();
   await renderTimeline();
   updateLocBar();
-  toast('📷 Saved');
+  toast('📷 Photo saved');
+});
+
+function openCamera() {
+  if (!locName) {
+    document.getElementById('loc-input').focus();
+    toast('Set a location first');
+    return;
+  }
+  document.getElementById('native-camera-input').click();
 }
 
 // ════════════════════════════════════════════════════════
@@ -1841,15 +1084,11 @@ async function capturePhoto() {
 // ════════════════════════════════════════════════════════
 
 function openNote() {
-  if (!locName) {
-    document.getElementById('loc-input').focus();
-    return;
-  }
-  editId = null;
-  s520On = false;
+  if (!locName) { document.getElementById('loc-input').focus(); toast('Set a location first'); return; }
+  editId = null; s520On = false;
   document.getElementById('note-textarea').value = '';
   document.getElementById('s520-toggle').classList.remove('on');
-  document.getElementById('note-title').textContent = 'ADD NOTE';
+  document.getElementById('note-title').textContent     = 'ADD NOTE';
   document.getElementById('note-loc-label').textContent = locName;
   showOverlay('overlay-note');
   setTimeout(() => document.getElementById('note-textarea').focus(), 150);
@@ -1858,11 +1097,10 @@ function openNote() {
 async function openEditNote(id) {
   const entry = await get('entries', id);
   if (!entry) return;
-  editId = id;
-  s520On = entry.s520 || false;
+  editId = id; s520On = entry.s520 || false;
   document.getElementById('note-textarea').value = entry.text;
   document.getElementById('s520-toggle').classList.toggle('on', s520On);
-  document.getElementById('note-title').textContent = 'EDIT NOTE';
+  document.getElementById('note-title').textContent     = 'EDIT NOTE';
   document.getElementById('note-loc-label').textContent = entry.locName;
   showOverlay('overlay-note');
   setTimeout(() => document.getElementById('note-textarea').focus(), 150);
@@ -1880,7 +1118,7 @@ async function saveNote() {
   if (micActive) stopMic();
 
   const autoFlag = s520check(text);
-  const s520 = s520On || autoFlag;
+  const s520     = s520On || autoFlag;
 
   if (editId) {
     const entry = await get('entries', editId);
@@ -1910,28 +1148,25 @@ function toggleS520() {
 // VOICE INPUT
 // ════════════════════════════════════════════════════════
 
-function toggleMic() {
-  micActive ? stopMic() : startMic();
-}
+function toggleMic() { micActive ? stopMic() : startMic(); }
 
 function startMic() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { toast('Speech recognition unavailable'); return; }
 
   recognizer = new SR();
-  recognizer.continuous = false;
-  recognizer.interimResults = false;
-  recognizer.lang = 'en-US';
+  recognizer.continuous      = false;
+  recognizer.interimResults  = false;
+  recognizer.lang            = 'en-US';
 
-  const ta = document.getElementById('note-textarea');
+  const ta   = document.getElementById('note-textarea');
   const base = ta.value;
 
   recognizer.onresult = e => {
     const t = e.results[0][0].transcript;
     ta.value = base + (base && !base.endsWith(' ') ? ' ' : '') + t;
   };
-
-  recognizer.onend = () => { micActive = false; document.getElementById('mic-btn').classList.remove('listening'); };
+  recognizer.onend   = () => { micActive = false; document.getElementById('mic-btn').classList.remove('listening'); };
   recognizer.onerror = e => { micActive = false; document.getElementById('mic-btn').classList.remove('listening'); if (e.error !== 'no-speech') toast('Mic: ' + e.error); };
 
   recognizer.start();
@@ -1952,63 +1187,73 @@ function stopMic() {
 async function openRoomsPanel() {
   const entries = await jobEntries(job.id);
 
-  // Build per-room data: count and most recent photo thumb
   const roomData = {};
   entries.forEach(e => {
     if (!e.locName) return;
-    if (!roomData[e.locName]) roomData[e.locName] = { count: 0, lastPhoto: null, lastTs: 0 };
+    if (!roomData[e.locName]) roomData[e.locName] = { count: 0, lastThumb: null, lastTs: 0 };
     roomData[e.locName].count++;
     if (e.type === 'photo' && e.ts > roomData[e.locName].lastTs) {
-      roomData[e.locName].lastPhoto = e.thumb;
-      roomData[e.locName].lastTs = e.ts;
+      roomData[e.locName].lastThumb = e.thumb;
+      roomData[e.locName].lastTs    = e.ts;
     }
   });
 
-  const rooms = locOrder; // in first-appearance order
-  const el = document.getElementById('rooms-list');
-  const subtitle = document.getElementById('rooms-subtitle');
+  const el    = document.getElementById('rooms-list');
+  const cntEl = document.getElementById('rooms-count');
+  cntEl.textContent = `${locOrder.length} room${locOrder.length !== 1 ? 's' : ''}`;
 
-  subtitle.textContent = `${rooms.length} room${rooms.length !== 1 ? 's' : ''} visited`;
-
-  if (!rooms.length) {
+  if (!locOrder.length) {
     el.innerHTML = '<div class="rooms-empty"><div style="font-size:28px;opacity:0.2;margin-bottom:10px">⊞</div><div>No rooms visited yet</div></div>';
     showOverlay('overlay-rooms');
     return;
   }
 
-  el.innerHTML = rooms.map(name => {
-    const data = roomData[name] || { count: 0, lastPhoto: null };
+  // Clear and build programmatically (same approach as timeline — avoids innerHTML/img bug)
+  el.innerHTML = '';
+
+  locOrder.forEach(name => {
+    const data      = roomData[name] || { count: 0, lastThumb: null };
     const isCurrent = name === locName;
-    const thumbHtml = data.lastPhoto
-      ? `<img class="room-thumb" src="${data.lastPhoto}" alt="">`
-      : `<div class="room-thumb-placeholder">◎</div>`;
-    const safe = name.replace(/'/g, "\\'");
-    return `
-      <div class="room-card${isCurrent ? ' current-room' : ''}" onclick="jumpToRoom('${safe}')">
-        ${thumbHtml}
-        <div class="room-info">
-          <div class="room-name">${name}</div>
-          <div class="room-meta">${data.count} capture${data.count !== 1 ? 's' : ''}</div>
-        </div>
-        <div class="room-arrow">›</div>
-      </div>`;
-  }).join('');
+    const card      = document.createElement('div');
+    card.className  = 'room-card' + (isCurrent ? ' current-room' : '');
+    card.addEventListener('click', () => jumpToRoom(name));
+
+    if (data.lastThumb) {
+      const img     = document.createElement('img');
+      img.className = 'room-thumb';
+      img.alt       = '';
+      img.src       = data.lastThumb;
+      card.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className   = 'room-thumb-placeholder';
+      ph.textContent = '◎';
+      card.appendChild(ph);
+    }
+
+    const info = document.createElement('div');
+    info.className = 'room-info';
+    info.innerHTML = `<div class="room-name">${name}</div>
+                      <div class="room-meta">${data.count} capture${data.count !== 1 ? 's' : ''}</div>`;
+    card.appendChild(info);
+
+    const arrow = document.createElement('div');
+    arrow.className   = 'room-arrow';
+    arrow.textContent = '›';
+    card.appendChild(arrow);
+
+    el.appendChild(card);
+  });
 
   showOverlay('overlay-rooms');
 }
 
-function closeRoomsPanel() {
-  hideOverlay('overlay-rooms');
-}
+function closeRoomsPanel() { hideOverlay('overlay-rooms'); }
 
 function jumpToRoom(name) {
   closeRoomsPanel();
   setLocation(name);
-  // Scroll timeline to top after switch
-  setTimeout(() => {
-    const tl = document.getElementById('timeline');
-    if (tl) tl.scrollTop = 0;
-  }, 100);
+  setTimeout(() => { const tl = document.getElementById('timeline'); if (tl) tl.scrollTop = 0; }, 100);
 }
 
 // ════════════════════════════════════════════════════════
@@ -2035,10 +1280,10 @@ async function exportJSON() {
   if (!job) { toast('No active inspection'); return; }
 
   const entries = await jobEntries(job.id);
-
-  // Build location order from first-appearance
-  const seen = [];
-  entries.sort((a,b) => a.ts - b.ts).forEach(e => { if (e.locName && !seen.includes(e.locName)) seen.push(e.locName); });
+  const seen    = [];
+  entries.sort((a,b) => a.ts - b.ts).forEach(e => {
+    if (e.locName && !seen.includes(e.locName)) seen.push(e.locName);
+  });
 
   const locMap = {};
   entries.forEach(e => { if (e.locName) (locMap[e.locName] = locMap[e.locName] || []).push(e); });
@@ -2046,17 +1291,17 @@ async function exportJSON() {
   const out = {
     schema_version: '1.0',
     job: {
-      id: job.id,
-      client: job.client || '',
-      address: job.address || '',
-      inspector: job.inspector || '',
-      inspection_date: new Date().toISOString().split('T')[0],
-      exported_at: new Date().toISOString()
+      id:               job.id,
+      client:           job.client   || '',
+      address:          job.address  || '',
+      inspector:        job.inspector || '',
+      inspection_date:  new Date().toISOString().split('T')[0],
+      exported_at:      new Date().toISOString()
     },
     locations: seen.map((loc, i) => ({
       sequence: i + 1,
-      name: loc,
-      entries: (locMap[loc] || []).map(e => {
+      name:     loc,
+      entries:  (locMap[loc] || []).map(e => {
         const base = { id: e.id, type: e.type, timestamp: new Date(e.ts).toISOString() };
         if (e.type === 'note')  { base.text = e.text; base.s520_flag = e.s520 || false; }
         if (e.type === 'photo') { base.image_data = e.img; base.thumbnail = e.thumb; }
@@ -2065,7 +1310,7 @@ async function exportJSON() {
     }))
   };
 
-  const json = JSON.stringify(out, null, 2);
+  const json     = JSON.stringify(out, null, 2);
   const filename = `${job.id}_${job.client || 'inspection'}.json`;
 
   try {
@@ -2073,14 +1318,12 @@ async function exportJSON() {
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url; a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-  } catch(e) {
-    const uri = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+  } catch(err) {
     const a = document.createElement('a');
-    a.href = uri; a.download = filename; a.click();
+    a.href     = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+    a.download = filename; a.click();
   }
 
   toast('Exported ' + filename);
@@ -2103,7 +1346,7 @@ function closeSettings() { hideOverlay('overlay-settings'); }
 function learnKey() {
   const btn = document.getElementById('btn-learn');
   btn.textContent = 'Waiting — press shutter now…';
-  learningKey = true;
+  learningKey     = true;
 
   const handler = e => {
     e.preventDefault();
@@ -2116,7 +1359,6 @@ function learnKey() {
     document.removeEventListener('keydown', handler);
     setTimeout(() => { btn.textContent = 'Press to learn key from shutter remote'; }, 2500);
   };
-
   document.addEventListener('keydown', handler, { once: true });
 }
 
@@ -2134,20 +1376,15 @@ function confirmCloseJob() {
 
 document.addEventListener('keydown', e => {
   if (learningKey) return;
-
   const key = localStorage.getItem('btKey') || ' ';
   if (e.key !== key) return;
-
   const active = document.activeElement;
   if (active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT')) return;
-
   e.preventDefault();
 
-  const camOpen  = document.getElementById('overlay-camera').classList.contains('active');
   const noteOpen = document.getElementById('overlay-note').classList.contains('active');
   const mainVis  = document.getElementById('screen-main').classList.contains('active');
 
-  if (camOpen)  { capturePhoto(); return; }
   if (noteOpen) { saveNote(); return; }
   if (mainVis)  { openCamera(); }
 });
@@ -2165,7 +1402,7 @@ if ('serviceWorker' in navigator) {
 // ════════════════════════════════════════════════════════
 
 async function init() {
-  db = await openDB();
+  db    = await openDB();
   btKey = localStorage.getItem('btKey') || ' ';
   await loadJobs();
 }
